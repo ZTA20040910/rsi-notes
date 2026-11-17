@@ -1,7 +1,7 @@
 ---
 const contracts = [
-  { target: '保持语义的运行实现', example: 'NaiveRT 的低延迟优化', boundary: '指定输入与状态下的数值、采样和状态行为', check: '先查数值与状态，再看整模收益' },
-  { target: '允许近似的算子', example: 'Recursive 的 kernel 任务', boundary: '约定的输入范围、dtype 与误差容差', check: '边界输入、跨 shape 表现与计时可靠性' },
+  { target: '保持原有行为的程序优化', example: 'NaiveRT 的低延迟优化', boundary: '相同输入与状态下，哪些数值结果、采样行为和状态更新必须保持一致', check: '先检查数值与状态，再看完整模型是否受益' },
+  { target: '允许近似计算的算子', example: 'Recursive 的 kernel 任务', boundary: '约定输入范围、数据类型与允许的误差', check: '边界输入、不同张量形状下的表现，以及计时是否可靠' },
   { target: '模型压缩与重构', example: 'Flint 的量化与蒸馏', boundary: '约定的任务质量与可接受退化', check: '质量、时延、内存，以及逐任务变化' },
 ];
 ---
@@ -13,25 +13,25 @@ const contracts = [
       <tbody>{contracts.map(contract => <tr><th scope="row">{contract.target}<span>{contract.example}</span></th><td>{contract.boundary}</td><td>{contract.check}</td></tr>)}</tbody>
     </table>
   </div>
-  <p>NaiveRT 的逐位一致、算子的数值容差、模型压缩的质量取舍，各自对应不同承诺。若改的是研究策略，还要在相同目标和资源约束下，比较新任务收益与总成本。</p>
+  <p>逐位一致要求结果的每一位都相同，误差容差允许约定范围内的偏差，模型压缩则需要权衡质量与成本。若改的是研究策略，还要在相同目标和资源限制下，比较新任务表现与总成本。</p>
   <div class="insight-source-links">
     <a href="https://naive.ai/en/research/">Naive · 数值验收 ↗</a>
-    <a href="https://recursive.com/updates/first-steps-toward-automated-ai-research">Recursive · 数值契约 ↗</a>
+    <a href="https://recursive.com/updates/first-steps-toward-automated-ai-research">Recursive · 数值检查规则 ↗</a>
     <a href="https://recursive.com/updates/introducing-recursive-flint">Flint · 量化取舍 ↗</a>
   </div>
 </section>
 
 <section class="insight-inset evaluator-comparison" id="evaluator-versions" aria-labelledby="evaluator-versions-title">
   <h4 id="evaluator-versions-title">评估器更新以后，旧分数还能怎么用？</h4>
-  <p>Recursive 会加固评估。我由此追问：搜索方法与评分规则同时变化时，分数上涨究竟来自哪里？</p>
+  <p>Recursive 会修补评估中的漏洞。我由此追问：搜索方法与评分规则同时变化时，分数上涨究竟来自哪里？</p>
   <div class="evaluator-views">
-    <div><h5>先看评估器</h5><p>用同一批候选接受新旧评价，再由独立参照检查谁选得更准。</p></div>
-    <div><h5>再看研究过程</h5><p>让两套评价各自引导搜索，在同一独立参照下比较最终产物，并将复验计入总预算。</p></div>
+    <div><h5>先看评分准不准</h5><p>用新旧评估器给同一批方案打分，再用另一套独立维护的评价检查谁选得更准。</p></div>
+    <div><h5>再看能否帮助研究</h5><p>让两套评估器分别引导搜索，最后用同一套独立评价比较结果，并把重新验证的成本计入总预算。</p></div>
   </div>
-  <p>RQGM 提供了可借鉴的处理：阶段内固定评估器，更新先经独立参照检验；替换后相关旧分数失效，候选按需重评。我会同时保存候选、评估器和协议版本，用共同候选连接新旧结果。</p>
-  <p>最终参照也要控制访问与版本。反复用同一小测试集调系统，会逐渐削弱它作为独立评价的价值。</p>
+  <p>RQGM 给出了一种做法：每个阶段先固定评估器，更新前用独立的评价依据检查它；替换后，依赖旧评估器的相关分数作废，方案再次被用到时重新评分。我会记录方案、评估器、测试设置和评分规则的版本，再用同一批方案比较新旧评分。</p>
+  <p>最终用于比较的评价也要记录版本，并限制研究过程中反复访问。总用同一个小测试集调整系统，它就越来越难独立判断系统是否真的进步。</p>
   <div class="insight-source-links">
-    <a href="https://recursive.com/updates/first-steps-toward-automated-ai-research">Recursive · 评估加固 ↗</a>
+    <a href="https://recursive.com/updates/first-steps-toward-automated-ai-research">Recursive · 修补评估漏洞 ↗</a>
     <a href="https://arxiv.org/html/2606.26294v3#S3.SS2">RQGM · 评估器更新 ↗</a>
   </div>
 </section>

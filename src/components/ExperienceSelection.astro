@@ -1,15 +1,15 @@
 ---
 const stages = [
-  { title: '选中任务', question: '本来想补什么弱项？', record: '按任务类型与事先估计的难度，保留计划采样数量。', risk: '不要只看最后成功的任务。' },
+  { title: '选中任务', question: '本来想补什么弱项？', record: '按任务类型与事先估计的难度，记录原本计划采样多少任务。', risk: '不要只看最后成功的任务。' },
   { title: '完成执行', question: '哪些任务没能完成？', record: '记录完成、超时和执行失败，区分模型、工具与环境原因。', risk: '未完成轨迹的完整长度是未知的。' },
-  { title: '及时返回', question: '回来时还赶得上训练吗？', record: '对照返回时间、策略版本与过时阈值，统计被丢弃的轨迹。', risk: '生成速度只是总等待时间的一部分。' },
+  { title: '及时返回', question: '回来时还赶得上训练吗？', record: '记录返回时间、生成轨迹所用的策略版本，以及系统允许落后多少个版本，找出因过时被丢弃的轨迹。', risk: '生成速度只是总等待时间的一部分。' },
   { title: '核验经验', question: '轨迹与反馈可用吗？', record: '核验轨迹与反馈是否可用，区分任务失败和工具、评分错误。', risk: '任务失败，不等于训练样本无效。' },
-  { title: '最终入训', question: '哪些任务最终进入训练？', record: '把实际入训比例与计划分布对齐，检查筛选、长度配比和 batch 组成。', risk: '失败和未完成任务仍留在最初的分母里。' },
+  { title: '进入训练', question: '哪些任务最终进入训练？', record: '比较各类任务原本计划采样的比例与实际入训比例，检查筛选、长短轨迹配比和每批训练数据的组成。', risk: '计算整体保留比例时，失败和未完成任务仍算在最初的任务总数里。' },
 ];
 ---
 <section class="insight-inset" id="training-path" aria-labelledby="training-path-title">
   <h4 id="training-path-title">我想沿着这条路径，查经验丢在了哪里</h4>
-  <p>系统选中了薄弱任务，运行与筛选还会再次改变它。展开每一步，看我会记录什么。</p>
+  <p>系统选中了薄弱任务，执行与筛选还会决定哪些经验能留下。展开每一步，看我会记录什么。</p>
   <ol class="experience-path">
     {stages.map((stage, index) => (
       <li><details>
@@ -18,6 +18,6 @@ const stages = [
       </details></li>
     ))}
   </ol>
-  <p class="selection-relation">实际入训任务分布 ∝ 计划采样分布 × 各阶段条件保留率的乘积</p>
-  <p class="selection-explanation">这里按任务数量比较：对每类任务，各保留率都以经验在前序环节均被保留为条件，环节之间可以相关。入训后的 token 权重还会影响学习，能力收益仍要看独立新任务。</p>
+  <p class="selection-relation">训练数据中各类任务的占比 ∝ 计划采样占比 × 每一步保留比例的乘积</p>
+  <p class="selection-explanation">这些比例要沿着同一批任务统计。对每类任务，每一步只在前面各步都保留下来的经验中计算比例，各步可能相互影响。这里按任务数量比较；训练时的 token 权重也会影响学习，最后还要看独立新任务上的表现。</p>
 </section>
