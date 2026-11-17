@@ -1,44 +1,57 @@
 ---
-title: "Flint：一次优化，怎样改变下一步的研究方向"
-description: "从架构、输出层量化、蒸馏到 kernel，理解瓶颈迁移和跨模块的研发取舍。"
+title: "Flint：一次优化之后，下一步改哪里"
+description: "架构变稀疏，输出层变突出。沿着量化、蒸馏与 kernel 的配合，看研究优先级如何改变。"
 order: 3
 level: "L2"
 label: "Recursive · Flint"
 source: "https://recursive.com/updates/introducing-recursive-flint"
 readingTime: "4 分钟"
 insight: "模型变稀疏以后，最值得优化的部分，可能恰好是没有变稀疏的部分。"
+metrics:
+  - value: "≈40B"
+    label: "总参数"
+    context: "本地编码 MoE；模型卡约 39.8B"
+  - value: "2.5B"
+    label: "每 token 激活参数"
+    context: "降低逐 token 推理的运行开销"
+  - value: "256k"
+    label: "配置上下文长度"
+    context: "模型配置为 262,144 tokens"
+takeaways:
+  - title: "改进会改变研究优先级"
+    text: "主干开销下降后，输出层成为更值得优化的对象。下一步方向应随系统状态重新选择。"
+  - title: "组合收益需要整体判断"
+    text: "架构、量化与 kernel 相互影响；我会看任务质量、时延和内存，避免简单相加局部收益。"
 ---
-
-Flint 把自动研究落到了一个可交付的本地编码模型上。研发中对架构、量化和推理方案的反馈驱动选择，体现了 [L2 的改进策略自主权](/rsi-notes/levels/l2/)。
 
 ## 成果
 
-Flint 是约 **40B 总参数、2.5B 激活参数**的本地编码 MoE。发布稿将专家配置搜索、输出层低比特量化与蒸馏、适配模型和硬件的 kernel 连接起来，形成模型能力与运行成本之间的一组技术选择。[Introducing Flint](https://recursive.com/updates/introducing-recursive-flint)
+Flint 将自动研究推进到可交付的本地编码模型：约 **40B 总参数、2.5B 激活参数**的 MoE，配套 `rec` 推理引擎。专家配置、输出层量化、蒸馏和 kernel 设计共同服务于本地能力与运行成本。[发布说明](https://recursive.com/updates/introducing-recursive-flint)
 
-模型卡列出约 39.8B 总参数、262,144 token 上下文，配置中的 `max_position_embeddings` 也是 262,144；博客则称最高 512k，建议使用不超过 256k。实际使用应依据权重、配置和后端理解，不能将博客上限当成所有运行方式的保证。[模型卡](https://huggingface.co/RecursiveSI/flint)、[配置文件](https://huggingface.co/RecursiveSI/flint/blob/main/config.json)
-
-`rec` 推理引擎的速度测试限定硬件、量化和输入长度，排除 prefill，并有单 session 使用限制。本地生成快，不自动意味着完整编码任务等比例提速，也不等于能够支持同等规模的并行研究。[rec 引擎](https://github.com/recursive-oss/rec)
+模型配置提供 **262,144 tokens** 的上下文长度。`rec` 的速度测试依赖具体硬件、量化和输入长度，排除 prefill，并有单 session 限制。这里最值得关注的成果，是模型与运行程序一起交付，而非一个脱离负载的速度数字。[模型卡](https://huggingface.co/RecursiveSI/flint) · [配置](https://huggingface.co/RecursiveSI/flint/blob/main/config.json) · [rec 引擎](https://github.com/recursive-oss/rec)
 
 ## 机制
 
-材料中值得展开的是三个互相依赖的选择：
+### 架构先改变开销分布
 
-1. **改变模型形状。** 搜索更适合本地吞吐的专家配置，减少逐 token 推理中的激活参数。
-2. **重新识别开销。** 主干变稀疏后，输出层 `lm_head` 在权重读取中的占比更加突出，低比特量化的价值随之改变。
-3. **恢复能力并适配执行。** 对输出层采用低比特表示，再通过蒸馏恢复精度，并生成适配模型与硬件的推理 kernel。
+搜索更适合本地吞吐的专家配置，减少每个 token 的激活参数。主干开销下降后，没有同比缩小的输出层 `lm_head`，在权重读取中的占比变得突出。
 
-这些环节共同服务于既定的本地能力与成本目标。AI 参与判断“接下来改哪里、采用什么方案”，有效产物进入交付模型和引擎，因此主要对应 L2。目标、约束和最终产品选择仍属于团队研发过程；不能从自动研究参与反推全部关键决策均无人介入。[研发过程说明](https://recursive.com/updates/introducing-recursive-flint)
+### 量化与蒸馏形成配合
 
-这里被改进、被保留的是模型与运行程序。要进一步讨论 [L5](/rsi-notes/levels/l5/)，还需说明改进器、搜索或评估机制如何被自主修改，并由后继研究系统实际继承和复用。更快的 Flint 将来可能帮助研发，与公开证明这条递归链已经运作，是不同强度的结论。
+输出层采用低比特表示，可以降低读取开销，但同时引入精度损失。蒸馏负责恢复能力，使压缩方案能够满足质量要求。量化是否值得做，取决于它与模型结构、精度恢复的共同效果。
+
+### kernel 把选择落实到硬件
+
+适配模型形状和硬件的 kernel，让前面的架构与数值表示选择转为实际执行收益。这条研发链说明：**模型形状改变了量化收益，量化又改变了 kernel 的实现空间。**[研发过程](https://recursive.com/updates/introducing-recursive-flint)
+
+AI 根据反馈选择“下一步改哪里”，有效方案进入模型与引擎，对应 [L2 的改进策略自主权](/rsi-notes/levels/l2/)。被保留的是研究产物；只有产生改进的方法本身也被修改、继承并复用，才进一步触及 [L5](/rsi-notes/levels/l5/)。
 
 ## 理解与取舍
 
-**一次优化的价值，还在于它改变了下一步最值得优化什么。** 主干开销下降后，原先不突出的输出层成为更值得关注的对象。架构改变了量化收益，量化又改变 kernel 的实现空间。
+**我更看重研究方向能否随系统变化。** 如果一直盯着最初的瓶颈，主干提速之后仍可能在旧方向上投入过多预算。一次优化除了直接收益，还可能使原先不划算的改动变得值得做。
 
-这让我更看重自动研究能否随着系统变化重新识别瓶颈，而不只是重复优化一个固定指标。能找到互相配合的技术组合，本身就有研究价值；不必只按提出了多少“全新算法”评价它。
+**找到互相配合的组合，也有研究价值。** 固定架构后只调 kernel，或固定运行程序后只换模型，都可能错过联合调整的空间。我会允许这些部分一起变化，再按任务质量、时延和内存判断是否采用，而不只统计“发明了多少新算法”。
 
-我的取舍是允许架构与运行程序一起调整，再依据任务质量、时延和内存共同判断。各模块的收益不能简单相加，也不能把 Flint 的全部加速归因于输出层量化。
+这种取舍需要回到实际负载。逐 token 解码、大 batch 与 prefill 的瓶颈不同；本地生成更快，也未必让包含工具调用和测试的完整编码任务等比例提速。各模块收益不能简单相加，更不能把全部加速归因于输出层量化。
 
-瓶颈还取决于负载：本地逐 token 解码、大 batch 与 prefill 可能需要不同选择。这条 insight 解释优化间的依赖，不保证每次改动都会创造下一轮净收益。
-
-继续阅读：[瓶颈迁移](/rsi-notes/insights/#bottleneck) · [从产物改进到机制继承](/rsi-notes/levels/l5/)
+[继续理解瓶颈迁移 →](/rsi-notes/insights/#bottleneck)

@@ -1,21 +1,36 @@
 ---
-title: "Recursive：在明确约束下，找到值得保留的改进"
-description: "通过 NanoGPT 与 NanoChat，理解自动研究的策略选择、资源约束，以及实验历史的价值。"
+title: "Recursive：什么才算更好的训练方法"
+description: "从 NanoGPT 与 NanoChat 看资源约束、可信验收，以及实验历史怎样帮助下一轮研究。"
 order: 2
 level: "L2"
 label: "Recursive"
 source: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
 readingTime: "5 分钟"
-insight: "最终程序更便宜，与发现这个程序的研究过程更便宜，是两个问题。"
+insight: "更好的训练方法，必须连同预算一起定义。"
+metrics:
+  - value: "4.06%"
+    label: "NanoGPT 平均训练时间减少"
+    context: "同为 Modal 8×H100；公开记录均值 80.6114 → 77.3376 秒。"
+  - value: "10 / 13"
+    label: "基线 / 候选运行次数"
+    context: "两组平均验证 loss 分别为 3.27850 / 3.27893。"
+  - value: "5 min"
+    label: "NanoChat 单次训练预算"
+    context: "单 B200、以 BPB 比较质量；不含发现方案的研究搜索。"
+takeaways:
+  - title: "预算会参与算法选择"
+    text: "每步效果更强的方法可能因运行更慢而落后；固定时间、固定计算量与固定质量是不同问题。"
+  - title: "环境决定研究能否反复推进"
+    text: "明确指标和较快反馈，让代理能执行、比较并继续尝试；选任务应看反馈结构，而不只看学科。"
+  - title: "先留条件，再沉淀规律"
+    text: "具体且易变的结果适合外部记录，可迁移的可靠规律再考虑进入训练，避免反复踩同一个坑。"
 ---
-
-Eureka Machine 的价值，在于把反馈转成下一项研究决策。它是四份材料中与 survey 分类直接对齐的案例：Appendix B，p.68 将 Recursive Automated AI Research 映射为 [L2：改进策略自主权](/rsi-notes/levels/l2/)。[survey v3](https://arxiv.org/abs/2609.11873v3)
 
 ## 成果
 
-First Steps 展示了三个方向：固定时间内训练得更好、达到质量门槛所需时间更短，以及 GPU kernel 更快。[原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+Eureka Machine 把反馈转成下一项研究决策。First Steps 展示了三类产物：**固定时间内训练得更好、达到质量门槛更快，以及更快的 GPU kernel。**[原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-NanoGPT 的公开重复运行记录提供了一个具体切面：
+NanoGPT 的同硬件重复运行记录，展示了一个具体改进：
 
 | Modal 8×H100，同硬件记录 | 原纪录方案重跑 | Recursive 候选 |
 |---|---:|---:|
@@ -23,24 +38,40 @@ NanoGPT 的公开重复运行记录提供了一个具体切面：
 | 平均训练时间 | 80.6114 秒 | 77.3376 秒 |
 | 平均验证 loss | 3.27850 | 3.27893 |
 
-按这两组公开记录计算，平均时间减少 **3.2738 秒，约 4.06%**，速度比约 1.0423×。原文的 79.7→77.5 秒采用另一呈现口径，不能与这里的均值混用。[基线记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/baseline_logs/statistics.md)、[候选记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/reproducibility_logs/statistics.md)、[产物说明](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/README.md)
+两组均值相差 **3.2738 秒，时间减少约 4.06%**。这个比较使用公开重复运行记录，两组平均验证 loss 均低于 3.28。[基线记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/baseline_logs/statistics.md) · [候选记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/reproducibility_logs/statistics.md)
 
-NanoChat 则在单 B200、每次训练五分钟的约束下比较方案，以越低越好的 BPB 衡量质量。**五分钟是最终训练执行预算，不是完整研究搜索成本。**[NanoChat 记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanochat_autoresearch/README.md)
+NanoChat 换了一个问题：在单 B200、**每次训练五分钟**的约束下，比较越低越好的 BPB。五分钟限制最终训练执行，不包括找到方案所花的搜索时间。[NanoChat 记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanochat_autoresearch/README.md)
 
 ## 机制
 
-公开系统描述包括并行研究分支、历史记录复用、实验验证和候选合并。AI 根据结果决定下一项训练或 kernel 干预，有效程序被保留。系统边界是这一自动研发流程，而不是只看最后被训练出来的小模型。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+### 历史记录帮助选择下一次试验
 
-这符合 L2：AI 选择改进策略，人仍规定任务、目标、预算与验收边界。作者披露过利用缓存、持久状态或计时细节获取虚假优势的候选，评估加固涉及人工反馈。基础模型也可能已知公开技巧，因此“重新找到一种方案”不足以证明独立发现。
+系统复用历史实验上下文，并行探索研究分支，验证后合并候选。AI 根据反馈决定下一项训练或 kernel 干预，有效程序被保留；人规定任务、预算和验收边界。这是 [L2 的策略选择](/rsi-notes/levels/l2/)：代理负责决定接下来怎么改。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-历史复用帮助选择后续实验，但记录存在本身不等于更高层自主权。公开材料没有因此证明研究框架已被 AI 改写，并作为后继改进器再次使用；不能直接升到 [L5](/rsi-notes/levels/l5/)。公开最终程序，也不等于 Eureka 系统完整开放。
+继承实验结果能改善下一次决策，但与改写研究机制并让后继复用仍有区别。后者才是 [L5](/rsi-notes/levels/l5/) 要进一步回答的问题。
+
+### 验收决定哪些路径能够继续
+
+Recursive 披露过利用缓存、持久状态或计时细节获得虚假优势的候选，评估加固也需要人工反馈。若这些候选被保留，后续预算就可能继续投入错误方向。与 [Naive 的局部／整体反例](/rsi-notes/posts/naive/) 放在一起看，验收既要排除虚假收益，也要避免因局部退化淘汰真正有效的组合。[评估与失败案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 ## 理解与取舍
 
-NanoChat 使用便宜的哈希局部记忆，提醒我：资源约束会参与决定什么方法更好。每步效果稍强但耗时更长的方法，在固定训练时间下可能反而落后。固定时间、固定 FLOPs 和固定质量门槛，是不同问题。
+### 算法价值取决于什么资源最贵
 
-我也看重实验历史的价值。刚发现、依赖硬件或 shape 的结果，适合连同条件保存在外部记录中，便于修正与复用。结合 Apex 的轨迹训练，我倾向于让较稳定、可迁移的规律再进入模型能力；这是两份材料引出的理解，并非已经证明的最优分工。
+NanoChat 使用便宜的哈希局部记忆。每步效果稍强却耗时更长的方法，在固定训练时间下可能反而落后；工程实现由此参与了算法选择。**固定时间、固定 FLOPs 和固定质量门槛，回答的是不同问题。**[NanoChat 案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-在成熟训练代码上找到几个百分点的改善有实际意义。决定是否采用时，我会同时考虑失败试验、代理推理、复验和人工筛查的成本，分别评价研究产物与研究过程。
+我会先说明硬件、时间与质量目标，再判断方案好在哪里。五分钟训练下有效的设计，不必然适合长时间训练；减少计算也可能增加存储。最终程序更便宜，与发现它的研究过程更便宜，同样需要分开看。
 
-继续阅读：[资源约束与算法选择](/rsi-notes/insights/#constraints) · [研究经验如何留下来](/rsi-notes/insights/#memory)
+### 任务适不适合自动研究，要看反馈结构
+
+Recursive 偏好指标明确、反馈较快的任务。这使代理能够反复修改、执行、观察后果，再调整方向。结合 Apex 的模拟环境，我会优先看一个任务能否形成可靠的反馈循环，而不只看它属于哪个学科。[任务选择](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+
+因此，搭建执行环境本身就是研究投入。验证很慢、代价很高或目标模糊时，模型更强也未必能快速推进；模拟器提供的反馈仍受目标完整性和模拟可信度限制。
+
+### 经验先保留条件，再考虑沉淀成能力
+
+“某个 kernel 在某个 shape 下失败”适合记录具体条件，方便纠正；“如何判断融合会不会增加同步开销”则更接近可迁移的决策规律。结合 [Apex 的数据回流](/rsi-notes/posts/apex/)，我倾向于让易变结果先留在外部记录中，再把经过筛选的稳定规律用于训练。
+
+这不要求每产生一条经验就更新模型，也不要求每次都重读全部历史。我要保留的是结果、成立条件和可复用判断，避免把环境故障或偶然成功固化为能力。在决定是否采用一项改进时，还应算上失败试验、代理推理、复验和人工筛查的成本。
+
+继续阅读：[资源约束](/rsi-notes/insights/#constraints) · [实验环境](/rsi-notes/insights/#environment) · [经验积累](/rsi-notes/insights/#memory)

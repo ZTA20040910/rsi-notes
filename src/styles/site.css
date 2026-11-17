@@ -172,22 +172,6 @@ hr { margin: 32px 0; border: 0; border-top: 1px solid var(--line); }
 .not-found { max-width: 650px; margin: 100px auto; text-align: center; }
 .not-found h1 { font-size: 64px; }
 
-.mechanism-demo { margin: 38px 0; padding: 26px; background: var(--panel); border: 1px solid var(--line); }
-.mechanism-demo h2, .mechanism-demo h3 { margin-top: 0; font-size: 24px; }
-.mechanism-steps { margin-top: 22px; }
-.mechanism-steps details { margin: 0; padding: 0; background: transparent; border: 0; border-top: 1px solid var(--line); }
-.mechanism-steps details:last-child { border-bottom: 1px solid var(--line); }
-.mechanism-steps summary { display: flex; gap: 14px; align-items: baseline; padding: 18px 0; color: var(--ink); font-size: 15px; font-weight: 600; list-style: none; }
-.mechanism-steps summary::-webkit-details-marker { display: none; }
-.mechanism-steps summary b { display: none; }
-.mechanism-steps summary::after { content: "+"; margin-left: auto; color: var(--accent); font-size: 21px; font-weight: 400; }
-.mechanism-steps details[open] summary::after { content: "−"; }
-.mechanism-steps details[open] summary { margin-bottom: 0; }
-.mechanism-steps summary > span:first-child { color: var(--accent); font-family: var(--serif); }
-.mechanism-steps details > p, .mechanism-steps details > div { margin: 0 0 18px; font-size: 14px; line-height: 1.9; }
-.step-question { color: var(--accent); font-weight: 600; }
-.caption, .mechanism-caption { margin: 18px 0 0; color: var(--muted); font-size: 11px; line-height: 1.8; }
-
 @media (max-width: 1000px) {
   .hero { gap: 34px; }
   .definition-panel { padding: 24px; }
@@ -243,7 +227,6 @@ hr { margin: 32px 0; border: 0; border-top: 1px solid var(--line); }
   .prose h2 { font-size: 25px; }
   .prose h3 { font-size: 21px; }
   .prose th, .prose td { padding: 10px 12px; }
-  .mechanism-demo { padding: 20px; }
   .site-footer { flex-direction: column; gap: 12px; }
   .footer-meta { text-align: left; }
 }
