@@ -15,7 +15,7 @@ metrics:
     label: "次候选被采纳"
     context: "另有 71 次失败或回滚、17 次探索其他分支。"
   - value: "1,719"
-    label: "tokens/s · 跨请求生成速率"
+    label: "tokens/s · 设备端生成速率"
     context: "8×Blackwell，单活跃序列、关闭 thinking；生成阶段。"
 takeaways:
   - title: "速度会改变经验的入场机会"
@@ -30,7 +30,7 @@ takeaways:
 
 Naive 把模型架构、推理引擎与长轨迹学习放在同一条研发链上。Naive-N0.5-Flash 是基于 MiMo-V2.5 的 **309B MoE，单 token 激活约 15.5B 参数**；NaiveRT 则通过持续试验调整运行系统。151 次试验中，63 次采纳、71 次失败或回滚、17 次探索其他分支。[模型卡](https://huggingface.co/NaiveAI/Naive-N0.5-Flash) · [研究页](https://naive.ai/en/research/)
 
-关闭 thinking 时，跨请求生成速率为 **1,719 tokens/s**，最佳一秒峰值为 2,122 tokens/s。测试使用八张 Blackwell、单活跃序列，任务为 HTML/SVG 生成；排除 prefill、finalization 和重复循环请求。因此，这个数字描述生成阶段的速度，不能直接换算成多用户吞吐或完整任务耗时。[NaiveRT Performance](https://github.com/NaiveAI-Labs/NaiveRT)
+NaiveRT 公布的这组 HTML/SVG 测试中，设备端跨请求汇总生成速率为 **1,719 tokens/s**，最佳滑动一秒峰值为 2,122 tokens/s。配置为八张 Blackwell、单活跃序列、关闭 thinking，temperature 0.4、top-p 0.95；统计排除 prefill、finalization 和重复循环请求。这是该测试配置的生成阶段表现，不能直接换算成多用户吞吐或完整任务耗时。[NaiveRT Performance](https://github.com/NaiveAI-Labs/NaiveRT#performance)
 
 ## 机制
 
@@ -40,14 +40,14 @@ Naive 把模型架构、推理引擎与长轨迹学习放在同一条研发链�
 
 | 候选 | 局部观察 | 完整模型结果 | 取舍 |
 |---|---|---|---|
-| TMA 预取 | 微基准略慢 | 每步耗时缩短 | 局部退化也可能值得保留 |
+| TMA 预取 | 热缓存微基准略慢 | 每步耗时缩短 | 局部退化也可能值得保留 |
 | MoE 融合 | 数值正确 | 整模更慢 | 正确不等于值得采用 |
 
 同步、数据搬运和既有重叠机制，让局部收益无法直接相加。**最终验收对象应是这项优化服务的完整任务。**
 
 ### 生成时间也会影响训练样本
 
-同步 RL 要等待慢轨迹；异步 RL 中，轨迹若跨越过多策略版本，可能因过时被整条丢弃。于是，单条生成速度开始影响经验能否进入训练。[长轨迹 RL 说明](https://naive.ai/en/research/)
+同步 RL 要等待慢轨迹；在 Naive 讨论的、支持分段 rollout 且设有策略过时阈值的异步管线中，轨迹若跨越过多策略版本，可能被整条丢弃。于是，单条生成速度开始影响经验能否进入训练。[长轨迹 RL 说明](https://naive.ai/en/research/)
 
 AutoWM 的数据重做、筛选与后处理也是策略优化。[L3 的经验积累](/rsi-notes/levels/l3/) 则要看系统是否评估自己的行为、保存经验，并用于下一轮任务。仅调整数据方案或加速生成，还不能说明这条经验回路如何运作。
 

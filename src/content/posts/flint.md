@@ -15,8 +15,8 @@ metrics:
     label: "每 token 激活参数"
     context: "降低逐 token 推理的运行开销"
   - value: "256k"
-    label: "配置上下文长度"
-    context: "模型配置为 262,144 tokens"
+    label: "推荐使用上下文"
+    context: "博客建议不超过此范围；配置为 262,144 tokens"
 takeaways:
   - title: "改进会改变研究优先级"
     text: "主干开销下降后，输出层成为更值得优化的对象。下一步方向应随系统状态重新选择。"
@@ -28,7 +28,9 @@ takeaways:
 
 Flint 将自动研究推进到可交付的本地编码模型：约 **40B 总参数、2.5B 激活参数**的 MoE，配套 `rec` 推理引擎。专家配置、输出层量化、蒸馏和 kernel 设计共同服务于本地能力与运行成本。[发布说明](https://recursive.com/updates/introducing-recursive-flint)
 
-模型配置提供 **262,144 tokens** 的上下文长度。`rec` 的速度测试依赖具体硬件、量化和输入长度，排除 prefill，并有单 session 限制。这里最值得关注的成果，是模型与运行程序一起交付，而非一个脱离负载的速度数字。[模型卡](https://huggingface.co/RecursiveSI/flint) · [配置](https://huggingface.co/RecursiveSI/flint/blob/main/config.json) · [rec 引擎](https://github.com/recursive-oss/rec)
+发布稿称最高支持 **512k tokens**，建议使用范围为 **256k 以内**；当前公开配置为 **262,144 tokens**。[发布说明](https://recursive.com/updates/introducing-recursive-flint) · [模型卡](https://huggingface.co/RecursiveSI/flint) · [配置](https://huggingface.co/RecursiveSI/flint/blob/main/config.json)
+
+发布稿的速度比较排除 prefill，表现依赖具体硬件、量化和输入长度；`rec` 面向单会话推理优化。这里最值得关注的成果，是模型与运行程序一起交付，而非一个脱离负载的速度数字。[rec 引擎](https://github.com/recursive-oss/rec)
 
 ## 机制
 

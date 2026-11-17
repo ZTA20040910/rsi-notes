@@ -29,7 +29,7 @@ insights:
     label: "速度与学习机会"
     title: "推理速度，可能影响模型能学到哪些经验"
     thesis: "推理提速可能减少有用轨迹的损失，改变实际进入训练的数据组成。"
-    evidence: "Naive 对长轨迹 RL 的解释是：同步训练需要等待慢轨迹；异步训练中，轨迹若跨越过多策略版本，可能因过时而被整条丢弃。生成时间因此影响经验能否进入训练。"
+    evidence: "Naive 对长轨迹 RL 的解释是：同步训练需要等待慢轨迹；在支持分段 rollout、设有策略过时阈值的异步管线中，长轨迹可能超过阈值而被整条丢弃。生成时间因此影响经验能否进入训练。"
     sources:
       - label: "Naive · 长轨迹 RL"
         url: "https://naive.ai/en/research/"
@@ -51,7 +51,7 @@ insights:
     label: "资源约束"
     title: "什么方法更好，必须连同预算一起定义"
     thesis: "方法的优劣取决于预算内能达到的结果，执行成本也参与算法选择。"
-    evidence: "Recursive 的 NanoChat 在五分钟训练预算下采用便宜的哈希局部记忆；Apex 的 DDPO 案例减少去噪开销、调整停止方式，把更多可用时间用于训练。"
+    evidence: "Recursive 的 NanoChat 在五分钟训练预算下，为目标模型采用低开销的哈希 n-gram 嵌入；Apex 的 DDPO 案例减少去噪开销、调整停止方式，把更多可用时间用于训练。"
     sources:
       - label: "Recursive · NanoChat"
         url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
@@ -77,7 +77,7 @@ insights:
     label: "验收与研究方向"
     title: "好的验收，既要拒绝假改进，也要保住真改进"
     thesis: "验收不仅影响结果可信度，也决定真正有效的方向能否继续获得预算。"
-    evidence: "Naive 的 TMA 预取在微基准里略慢，却让完整模型更快；MoE 融合数值正确，整模反而更慢。Recursive 也披露过利用缓存或计时细节获得虚假优势的候选。"
+    evidence: "Naive 的 TMA 预取在热缓存微基准里略慢，却让完整模型更快；MoE 融合数值正确，整模反而更慢。Recursive 也披露过利用缓存或计时细节获得虚假优势的候选。"
     sources:
       - label: "Naive · 局部与整模对照"
         url: "https://naive.ai/en/research/"
@@ -129,7 +129,7 @@ insights:
     label: "经验积累"
     title: "研究经验，需要以合适的方式留给下一轮"
     thesis: "我倾向于用记录保留易变细节，用训练积累可靠、可迁移的判断。"
-    evidence: "Recursive 复用历史实验上下文、并行探索并合并分支；Apex 描述了研究轨迹参与训练，以及通过失败分析生成、验证定向数据，再纳入后续开发的过程。"
+    evidence: "Recursive 复用历史实验上下文，并在相关 kernel 任务之间复用发现；研究系统 Apex Research 识别能力缺口，生成、验证定向数据，再纳入后续训练。"
     sources:
       - label: "Recursive · 历史复用"
         url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"

@@ -59,6 +59,6 @@ Hermes 将任务中的有效流程与纠错经验整理为技能和持久记忆�
 ### Apex
 
 - [Apex-35B 模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)：基础模型、研究轨迹与训练说明。
-- [Apex-Tune 结果仓库](https://github.com/apexin-ai/Apex-Tune-results)：训练脚本和多种子结果。
+- [Apex-Tune 结果仓库](https://github.com/apexin-ai/Apex-Tune-results)：NanoChat、fused attention、SimpleTES 与 TriMul 的脚本和结果。
 
 [阅读六条个人判断 →](/rsi-notes/insights/) · [回到首页 →](/rsi-notes/)

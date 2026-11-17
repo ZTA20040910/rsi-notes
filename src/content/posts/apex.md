@@ -37,7 +37,7 @@ Apex-35B 是基于 Qwen3.6-35B-A3B 开发的文本模型，约 **35B 总参数�
 | Apex 完成训练交付 | 训练后的 Qwen2.5-3B-Instruct | **24.4%** |
 | Base 代理未完成训练或提交 | 未训练目标模型 | **11.7%** |
 
-这组结果体现了**把研究可靠地交付出来的价值**；由于对照没有完成训练，差距不能直接归因于训练算法更好。[任务与执行记录](https://www.apexin.com/apex-35b/#ai) · [训练脚本与多种子结果](https://github.com/apexin-ai/Apex-Tune-results)
+这组结果体现了**把研究可靠地交付出来的价值**；由于对照没有完成训练，差距不能直接归因于训练算法更好。[任务与执行记录](https://www.apexin.com/apex-35b/#ai)
 
 ## 机制
 
@@ -47,7 +47,7 @@ Apex-35B 是基于 Qwen3.6-35B-A3B 开发的文本模型，约 **35B 总参数�
 
 ### 把能力缺口转成下一轮数据
 
-研发轨迹被用于训练，能力缺口与失败分析又引导定向样本的生成、验证和回流。这提供了 [L3 的经验积累线索](/rsi-notes/levels/l3/)：评价研究中的行为与结果，把经验转成后续开发可用的信息。我会继续追踪哪些经验被留下，以及它们怎样改变下一轮任务表现。[Building Through RSI](https://www.apexin.com/apex-35b/#ai)
+Apex 的研发轨迹被用于训练；研究系统 Apex Research 识别能力缺口，生成、验证定向数据，再纳入后续训练。这提供了 [L3 的经验积累线索](/rsi-notes/levels/l3/)：评价研究中的行为与结果，把经验转成后续开发可用的信息。我会继续追踪哪些经验被留下，以及它们怎样改变下一轮任务表现。[Building Through RSI](https://www.apexin.com/apex-35b/#ai) · [模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)
 
 ### 让领域问题成为可执行的实验
 

@@ -30,7 +30,7 @@ takeaways:
 
 Eureka Machine 把反馈转成下一项研究决策。First Steps 展示了三类产物：**固定时间内训练得更好、达到质量门槛更快，以及更快的 GPU kernel。**[原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-NanoGPT 的同硬件重复运行记录，展示了一个具体改进：
+NanoGPT 发布稿报告 **79.7 → 77.5 秒**；下面采用官方仓库中两组方案在同一硬件上的重复运行记录，比较其均值：
 
 | Modal 8×H100，同硬件记录 | 原纪录方案重跑 | Recursive 候选 |
 |---|---:|---:|
@@ -46,21 +46,21 @@ NanoChat 换了一个问题：在单 B200、**每次训练五分钟**的约束�
 
 ### 历史记录帮助选择下一次试验
 
-系统复用历史实验上下文，并行探索研究分支，验证后合并候选。在人规定的任务、运行环境和预算内，AI 根据反馈决定下一项训练或 kernel 干预，这体现 [L2 的策略优化](/rsi-notes/levels/l2/)。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+系统复用历史实验上下文，并行探索研究分支，组合有前景的方案并验证候选结果。在人规定的任务、运行环境和预算内，AI 根据反馈决定下一项训练或 kernel 干预，这体现 [L2 的策略优化](/rsi-notes/levels/l2/)。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-把实验结果连同条件保留，并用于后续研究选择，则体现 [L3 的经验积累](/rsi-notes/levels/l3/)：评估执行结果，留下可复用经验，再影响下一轮试验。
+在 SOL-ExecBench 中，系统还联合搜索 **235 个 kernel**，在相关任务之间复用发现。保留先前经验并用于后续研究选择，体现 [L3 的经验积累](/rsi-notes/levels/l3/)；我会进一步关注这些记录是否保留了结果成立的条件。[跨任务复用](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 [L5 的自主递归继承](/rsi-notes/levels/l5/) 还要看系统如何自主管理研究任务与改进机制，并让后继继承使用。复用实验记录，本身尚未说明改进器、验证器或后代生成程序怎样被改进。
 
 ### 验收决定哪些路径能够继续
 
-Recursive 披露过利用缓存、持久状态或计时细节获得虚假优势的候选，评估加固也需要人工反馈。若这些候选被保留，后续预算就可能继续投入错误方向。与 [Naive 的局部／整体反例](/rsi-notes/posts/naive/) 放在一起看，验收既要排除虚假收益，也要避免因局部退化淘汰真正有效的组合。[评估与失败案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+Recursive 披露过利用缓存、持久状态或计时细节获得虚假优势的候选；团队结合 AI 辅助与人工反馈，持续改进检测器。若这些候选被保留，后续预算就可能继续投入错误方向。与 [Naive 的局部／整体反例](/rsi-notes/posts/naive/) 放在一起看，验收既要排除虚假收益，也要避免因局部退化淘汰真正有效的组合。[评估与失败案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 ## 理解与取舍
 
 ### 算法价值取决于什么资源最贵
 
-NanoChat 使用便宜的哈希局部记忆。每步效果稍强却耗时更长的方法，在固定训练时间下可能反而落后；工程实现由此参与了算法选择。**固定时间、固定 FLOPs 和固定质量门槛，回答的是不同问题。**[NanoChat 案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+NanoChat 在目标模型中使用低开销的哈希 n-gram 嵌入，利用局部上下文。每步效果稍强却耗时更长的方法，在固定训练时间下可能反而落后；工程实现由此参与了算法选择。**固定时间、固定 FLOPs 和固定质量门槛，回答的是不同问题。**[NanoChat 案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 我会先说明硬件、时间与质量目标，再判断方案好在哪里。五分钟训练下有效的设计，不必然适合长时间训练；减少计算也可能增加存储。最终程序更便宜，与发现它的研究过程更便宜，同样需要分开看。
 
