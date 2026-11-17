@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { href } from '../utils/paths';
+---
+<Layout title="页面未找到"><section class="shell not-found"><div class="section-kicker">404 / PAGE NOT FOUND</div><h1>这条研究路径还不存在。</h1><p>可以回到首页，从六个层级重新出发。</p><a class="button-primary" href={href('/')}>返回首页 ↗</a></section></Layout>

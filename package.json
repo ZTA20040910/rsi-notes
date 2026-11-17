@@ -1,0 +1,26 @@
+{
+  "name": "rsi-notes",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "verify": "python3 scripts/check_site.py"
+  },
+  "dependencies": {
+    "astro": "7.4.8",
+    "@astrojs/markdown-remark": "7.3.6",
+    "katex": "^0.16.22",
+    "remark-math": "^6.0.0",
+    "rehype-katex": "^7.0.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "6.0.3"
+  }
+}

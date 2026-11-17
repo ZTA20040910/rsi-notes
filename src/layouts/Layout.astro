@@ -1,0 +1,62 @@
+---
+import '../styles/site.css';
+import 'katex/dist/katex.min.css';
+import { href } from '../utils/paths';
+interface Props { title?: string; description?: string; }
+const { title, description = '用 B0–L5 理解递归自我改进，阅读四份研究材料，形成自己的判断。' } = Astro.props;
+const pageTitle = title ? `${title} · RSI Notes` : 'RSI Notes · 从一次改进到下一轮研究';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const current = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f5f3ec" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      try { if (localStorage.getItem('rsi-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <header class="site-header shell">
+      <a class="brand" href={href('/')} aria-label="RSI Notes 首页"><span class="brand-mark">r.</span><span>RSI <b>NOTES</b></span></a>
+      <nav aria-label="主导航">
+        <a href={href('/#levels')} aria-current={current.includes('/levels/') ? 'page' : undefined}>层级地图</a>
+        <a href={href('/#cases')} aria-current={current.includes('/posts/') ? 'page' : undefined}>研究案例</a>
+        <a href={href('/insights/')} aria-current={current.includes('/insights/') ? 'page' : undefined}>我的理解</a>
+        <a href={href('/references/')} aria-current={current.includes('/references/') ? 'page' : undefined}>资料</a>
+      </nav>
+      <button id="theme-toggle" class="theme-button" aria-label="切换到深色主题" aria-pressed="false"><span aria-hidden="true">◐</span></button>
+    </header>
+    <main id="main-content"><slot /></main>
+    <footer class="site-footer shell">
+      <div><a class="footer-brand" href={href('/')}>RSI NOTES</a><p>从公开材料出发，追问改进如何被继承。</p></div>
+      <div class="footer-meta"><a href="https://github.com/ZTA20040910/rsi-notes">GitHub ↗</a><a href={href('/references/')}>来源与证据说明</a><span>资料核验 · 2026.11.17</span><span>Astro · <a href="https://github.com/satnaing/astro-paper">AstroPaper 改造</a></span></div>
+    </footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('#theme-toggle');
+      function updateButton() {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        button?.setAttribute('aria-pressed', String(dark));
+        button?.setAttribute('aria-label', dark ? '切换到浅色主题' : '切换到深色主题');
+      }
+      updateButton();
+      button?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('rsi-theme', next); } catch {}
+        updateButton();
+      });
+    </script>
+  </body>
+</html>

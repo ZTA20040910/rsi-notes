@@ -1,0 +1,15 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { href } from '../utils/paths';
+export async function getStaticPaths() { return (await getCollection('pages')).map(entry => ({ params: { id: entry.id }, props: { entry } })); }
+interface Props { entry: CollectionEntry<'pages'>; }
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const insightToc = [{slug:'bottleneck',text:'瓶颈迁移'},{slug:'experience-speed',text:'速度与学习机会'},{slug:'constraints',text:'约束决定方案'},{slug:'verification',text:'验收影响研究方向'},{slug:'environment',text:'实验环境的作用'},{slug:'memory',text:'经验的两种积累方式'}];
+const toc = entry.id==='insights' ? insightToc : headings.filter(h=>h.depth===2);
+---
+<Layout title={entry.data.title} description={entry.data.description}>
+  <div class="article-shell shell"><nav class="breadcrumb" aria-label="面包屑"><a href={href('/')}>首页</a><span>/</span><span>{entry.id==='insights'?'我的理解':'资料'}</span></nav><header class="article-header"><div class="section-kicker">{entry.id==='insights'?'MY TAKEAWAYS':'SOURCES & EVIDENCE'}</div><h1>{entry.data.title}</h1><p class="article-lead">{entry.data.description}</p></header><div class="article-grid"><article class="prose"><Content /></article><aside class="article-toc"><span class="tiny-label">本页内容</span><ol>{toc.map(h=><li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol><a class="toc-return" href={href('/#levels')}>← 返回层级地图</a></aside></div></div>
+</Layout>
