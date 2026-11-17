@@ -11,6 +11,10 @@ const { Content } = await render(entry);
 const levels = (await getCollection('levels')).sort((a,b) => a.data.order-b.data.order);
 const previous = levels[entry.data.order-1];
 const next = levels[entry.data.order+1];
+const relatedCases = [
+  ...entry.data.cases.map(item => ({ ...item, url: href(`/posts/${item.id}/`), external: false })),
+  ...(entry.data.examples ?? []).map(item => ({ ...item, external: true })),
+];
 const comparisons = [];
 if (previous) {
   if (!entry.data.fromPrevious) throw new Error(`Missing adjacent comparison for ${entry.id}`);
@@ -76,13 +80,13 @@ if (next) {
 
     <section class="level-section" aria-labelledby="case-relations-title">
       <div class="level-section-heading"><span aria-hidden="true">02</span><h2 id="case-relations-title">案例与这一层的关系</h2></div>
-      <div class:list={['level-case-grid', { 'single-case': entry.data.cases.length === 1 }]}>
-        {entry.data.cases.map(item => (
+      <div class:list={['level-case-grid', { 'single-case': relatedCases.length === 1 }]}>
+        {relatedCases.map(item => (
           <article class="level-case-card">
             <header><h3>{item.label}</h3><span>{item.relation}</span></header>
             <p class="level-case-observation">{item.observation}</p>
             <div class="level-case-reason"><h4>与 {entry.data.code} 的关系</h4><p>{item.meaning}</p></div>
-            <a href={href(`/posts/${item.id}/`)}>进入案例解读 <span aria-hidden="true">↗</span></a>
+            <a href={item.url}>{item.external ? '阅读机制说明' : '进入案例解读'} <span aria-hidden="true">↗</span></a>
           </article>
         ))}
       </div>
@@ -94,7 +98,7 @@ if (next) {
       <nav aria-label="相关理解">{entry.data.insightLinks.map(item => <a href={href(`/insights/#${item.id}`)}>{item.label} <span aria-hidden="true">↗</span></a>)}</nav>
     </section>
 
-    <div class="level-definition-source"><a href="https://arxiv.org/abs/2609.11873v3">定义来源 · {entry.data.sourceSection} <span aria-hidden="true">↗</span></a></div>
+    <div class="level-definition-source"><a href="https://arxiv.org/abs/2609.11873v3">延伸阅读 · {entry.data.sourceSection} <span aria-hidden="true">↗</span></a></div>
 
     <nav class="level-neighbors" aria-label="继续阅读层级">
       <a href={previous ? href(`/levels/${previous.id}/`) : href('/#levels')}><span aria-hidden="true">←</span><span>{previous ? `${previous.data.code} · ${previous.data.title}` : '回到层级地图'}</span></a>

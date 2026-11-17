@@ -25,6 +25,9 @@ const levels = defineCollection({
       id: z.enum(['naive', 'recursive-first-steps', 'flint', 'apex']),
       label: z.string(), relation: z.string(), observation: z.string(), meaning: z.string(),
     })).min(1).max(4),
+    examples: z.array(z.object({
+      label: z.string(), url: z.url(), relation: z.string(), observation: z.string(), meaning: z.string(),
+    })).max(2).optional(),
     insightLinks: z.array(z.object({ id: insightId, label: z.string() })).min(1).max(2),
     distinctions: z.array(z.object({ title: z.string(), text: z.string() })).length(2).optional(),
   }),

@@ -10,9 +10,10 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const sections = headings.filter(heading => heading.depth === 2);
 const posts = (await getCollection('posts')).sort((a,b)=>a.data.order-b.data.order);
-const levelLinks = entry.id === 'apex'
-  ? [{ label: 'L2 · 策略选择', id: 'l2' }, { label: 'L3 · 学习经验线索', id: 'l3' }]
-  : [{ label: 'L2 · 策略选择', id: 'l2' }];
+const levelLinks = [{ label: 'L2 · 优化策略', id: 'l2' }];
+if (entry.data.level.includes('L3')) {
+  levelLinks.push({ label: entry.data.level.includes('线索') ? 'L3 · 经验积累线索' : 'L3 · 经验积累', id: 'l3' });
+}
 ---
 <Layout title={entry.data.title} description={entry.data.description}>
   <div class="article-shell shell case-page">

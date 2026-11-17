@@ -3,21 +3,31 @@ title: "参考资料"
 description: "RSI 分层、研究案例，以及相关模型、代码与公开记录。"
 ---
 
+## 自主权分层
+
+这套阅读框架围绕“人规定什么，AI 自主决定什么”展开。
+
+| 层级 | 核心定义 |
+|---|---|
+| B0 · 任务内改进 | 反馈只改进当前产物，作为非 RSI 参照 |
+| L1 · 自主执行 | 人指定任务、运行环境与优化策略，AI 自主执行 |
+| L2 · 优化策略 | 人指定任务与运行环境，AI 发现问题并自主优化策略 |
+| L3 · 获取并积累经验 | 系统评估执行行为、积累经验，用于优化下一轮任务 |
+| L4 · 优化运行环境 | 人设基础规则与环境边界，AI 自主修改运行环境和系统状态 |
+| L5 · 自主递归继承 | 系统自主管理任务、改进器、验证器、研究策略与后代生成程序，让有效机制变化被后继复用 |
+
 <span id="survey"></span>
 
-## 定义与分层
+## RSI 与递归继承
 
-[The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement](https://arxiv.org/abs/2609.11873v3)，arXiv:2609.11873v3。
+[The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement](https://arxiv.org/abs/2609.11873v3) 提供了理解持久改进、自主权范围与机制继承的基础。
 
-| 主题 | 原文位置 | 关键问题 |
+| 主题 | 延伸阅读 | 关键问题 |
 |---|---|---|
-| RSI 定义与闭环术语 | §2.2，pp.9–11 | 改进怎样被保留，并进入下一轮系统状态 |
-| B0 / L1 | §3.1–3.2，pp.12–18 | 区分当前产物修订与可被后续继承的系统变化 |
-| L2 | §3.3，pp.18–21 | 判断 AI 是否自主选择下一项改进策略 |
-| L3 | §3.4，pp.22–26 | 判断学习者状态与后续经验获取是否形成反馈 |
-| L4 | §3.5，pp.26–31 | 判断运行反馈是否改变后续任务使用的持久状态 |
-| L5 | §3.6，pp.31–35 | 区分机制修改、后续复用，以及结构性与有效性证据 |
-| 跨层比较 | §3.7，p.35 | 自主权范围与改进质量、效率分别讨论 |
+| 持久改进与系统状态 | §2.2，pp.9–11 | 改进怎样被保留，并进入下一轮 |
+| 自主权与改进对象 | §3，pp.12–35 | AI 能决定哪些变化，人还控制什么 |
+| 机制的递归继承 | §3.6，pp.31–35 | 后继是否实际复用修改后的改进机制 |
+| 结构与效果 | §3.6–3.7，pp.31–35 | 形成递归结构，是否也带来了改进收益 |
 
 ## 四份核心材料
 
@@ -27,6 +37,10 @@ description: "RSI 分层、研究案例，以及相关模型、代码与公开�
 | [First Steps Toward Automated AI Research](https://recursive.com/updates/first-steps-toward-automated-ai-research) | Eureka 组织方式、训练方案、kernel 优化与验收 | [Recursive 案例](/rsi-notes/posts/recursive-first-steps/) |
 | [Introducing Recursive Flint](https://recursive.com/updates/introducing-recursive-flint) | How we built Flint：架构、量化、精度恢复和运行程序 | [Flint 案例](/rsi-notes/posts/flint/) |
 | [Apex-35B](https://www.apexin.com/apex-35b/#ai) | AI For AI 的训练交付、科研环境与定向数据回流 | [Apex 案例](/rsi-notes/posts/apex/) |
+
+## 补充案例：Hermes
+
+Hermes 将任务中的有效流程与纠错经验整理为技能和持久记忆，在后续任务中复用、修订，对应 [L3 的经验积累](/rsi-notes/levels/l3/)。机制说明见 [Skills](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) 与 [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)。
 
 ## 模型、代码与公开记录
 

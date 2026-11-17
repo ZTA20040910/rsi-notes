@@ -2,7 +2,7 @@
 title: "Recursive：什么才算更好的训练方法"
 description: "从 NanoGPT 与 NanoChat 看资源约束、可信验收，以及实验历史怎样帮助下一轮研究。"
 order: 2
-level: "L2"
+level: "L2 · L3"
 label: "Recursive"
 source: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
 readingTime: "5 分钟"
@@ -46,9 +46,11 @@ NanoChat 换了一个问题：在单 B200、**每次训练五分钟**的约束�
 
 ### 历史记录帮助选择下一次试验
 
-系统复用历史实验上下文，并行探索研究分支，验证后合并候选。AI 根据反馈决定下一项训练或 kernel 干预，有效程序被保留；人规定任务、预算和验收边界。这是 [L2 的策略选择](/rsi-notes/levels/l2/)：代理负责决定接下来怎么改。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+系统复用历史实验上下文，并行探索研究分支，验证后合并候选。在人规定的任务、运行环境和预算内，AI 根据反馈决定下一项训练或 kernel 干预，这体现 [L2 的策略优化](/rsi-notes/levels/l2/)。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-继承实验结果能改善下一次决策，但与改写研究机制并让后继复用仍有区别。后者才是 [L5](/rsi-notes/levels/l5/) 要进一步回答的问题。
+把实验结果连同条件保留，并用于后续研究选择，则体现 [L3 的经验积累](/rsi-notes/levels/l3/)：评估执行结果，留下可复用经验，再影响下一轮试验。
+
+[L5 的自主递归继承](/rsi-notes/levels/l5/) 还要看系统如何自主管理研究任务与改进机制，并让后继继承使用。复用实验记录，本身尚未说明改进器、验证器或后代生成程序怎样被改进。
 
 ### 验收决定哪些路径能够继续
 

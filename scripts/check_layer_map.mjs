@@ -53,7 +53,13 @@ test('six layers and their case links work without JavaScript', () => {
     assert.equal(control.hasAttribute('role'), false);
     const links = control.parentElement.querySelectorAll('.layer-case-strip a');
     assert.ok(links.length > 0);
-    for (const link of links) assert.match(link.getAttribute('href'), /^\/rsi-notes\/posts\/.+\/$/);
+    for (const link of links) {
+      const target = link.getAttribute('href');
+      if (target.startsWith('https:')) {
+        assert.equal(control.dataset.layerSelect, 'l3');
+        assert.equal(target, 'https://hermes-agent.nousresearch.com/docs/user-guide/features/skills');
+      } else assert.match(target, /^\/rsi-notes\/posts\/.+\/$/);
+    }
   }
   assert.equal(page.panels.filter((panel) => !panel.hidden)[0].dataset.layerPanel, 'l2');
 });
