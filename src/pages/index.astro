@@ -17,24 +17,27 @@ const mechanism = katex.renderToString(String.raw`\mathcal M_{t+1}\ne\mathcal M_
 const insights = [
   {
     number: '01',
-    title: '一次优化，会改变下一步值得研究什么。',
-    text: 'Flint 的架构、量化与精度恢复，展示了研究优先级怎样随系统变化。',
-    anchor: 'bottleneck',
-    source: 'FLINT · 瓶颈迁移',
+    title: '省下的预算，下一步怎么花？',
+    anchor: 'efficiency',
+    source: '效率',
   },
   {
     number: '02',
-    title: '生成得更快，可能让一些经验留下来。',
-    text: 'Naive 的长轨迹 RL 提示，完成时间可能影响哪些经验进入训练；能力收益仍有条件。',
-    anchor: 'experience-speed',
-    source: 'NAIVE · 学习机会',
+    title: '计划补的弱项，真的学到了吗？',
+    anchor: 'data',
+    source: '数据',
   },
   {
     number: '03',
-    title: '经验的价值，取决于怎样留给下一轮。',
-    text: 'Recursive 的研究记录与 Apex 的训练反馈，让我区分可修改的具体经验和可迁移的决策规律。',
-    anchor: 'memory',
-    source: 'RECURSIVE × APEX · 经验积累',
+    title: '什么变化，才值得留下？',
+    anchor: 'evaluation',
+    source: '验收',
+  },
+  {
+    number: '04',
+    title: '系统变了，旧经验还成立吗？',
+    anchor: 'inheritance',
+    source: '积累',
   },
 ];
 ---
@@ -119,24 +122,33 @@ const insights = [
     <section class="section" id="insights" aria-labelledby="insights-title">
       <div class="section-heading">
         <div>
-          <h2 id="insights-title">我会带走的三个判断。</h2>
+          <h2 id="insights-title">从效率出发，追踪经验怎样留下来。</h2>
         </div>
-        <a class="text-link" href={href('/insights/')}>阅读全部六条 insight <span aria-hidden="true">→</span></a>
+        <a class="text-link" href={href('/insights/')}>沿着这条主线读下去 <span aria-hidden="true">→</span></a>
       </div>
-      <div class="insight-list">
+      <nav class="insight-list insight-preview" aria-label="我的理解阅读主线">
         {insights.map((insight) => (
           <a class="insight-row" href={href(`/insights/#${insight.anchor}`)}>
             <span class="insight-number">{insight.number}</span>
             <div>
               <span class="tiny-label">{insight.source}</span>
               <h3>{insight.title}</h3>
-              <p>{insight.text}</p>
             </div>
             <span class="level-arrow" aria-hidden="true">↗</span>
           </a>
         ))}
-      </div>
+      </nav>
     </section>
 
   </div>
 </Layout>
+
+<style>
+  .insight-preview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px; }
+  .insight-preview .insight-row { grid-template-columns: minmax(0, 1fr) 16px; gap: 12px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .insight-preview .insight-number { display: none; }
+  .insight-preview .tiny-label { color: var(--orange); font-size: 14px; }
+  .insight-preview h3 { margin-top: 12px; font-size: 23px; line-height: 1.6; }
+  @media (max-width: 768px) { .insight-preview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; } }
+  @media (max-width: 480px) { .insight-preview h3 { font-size: 20px; } }
+</style>

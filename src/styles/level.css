@@ -57,6 +57,7 @@
 .level-judgment { padding: 30px 33px; background: var(--panel); border-left: 3px solid var(--orange); }
 .level-judgment h2 { margin: 0 0 18px; font-size: 27px; line-height: 1.6; }
 .level-judgment p { margin: 0; font-size: 16px; line-height: 1.95; }
+.level-judgment p + p { margin-top: 16px; }
 .level-judgment nav { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 22px; }
 .level-judgment nav a { min-height: 28px; color: var(--accent); font-size: 14px; text-decoration: none; }
 .level-judgment nav a:hover { text-decoration: underline; }

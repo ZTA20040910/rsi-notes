@@ -38,6 +38,14 @@ description: "RSI 分层、研究案例，以及相关模型、代码与公开�
 | [Introducing Recursive Flint](https://recursive.com/updates/introducing-recursive-flint) | How we built Flint：架构、量化、精度恢复和运行程序 | [Flint 案例](/rsi-notes/posts/flint/) |
 | [Apex-35B](https://www.apexin.com/apex-35b/#ai) | AI For AI 的训练交付、科研环境与定向数据回流 | [Apex 案例](/rsi-notes/posts/apex/) |
 
+## 从材料延伸出的追问
+
+| 问题 | 延伸阅读 | 网站中的联系 |
+|---|---|---|
+| 评估器更新后，旧分数怎么办 | [RQGM §3.2](https://arxiv.org/html/2606.26294v3#S3.SS2) | [验收与跨版本比较](/rsi-notes/insights/#evaluator-versions) |
+| 失败应当归因于模型、工具还是判断规则 | [Survey §5.4 的 Humanlaya 案例](https://arxiv.org/abs/2609.11873v3) | [补数据前的失败归因](/rsi-notes/insights/#environment) |
+| 经验何时失效、何时值得继续探索 | [Survey §6](https://arxiv.org/abs/2609.11873v3) | [条件与复验](/rsi-notes/insights/#memory)、[继续与停止](/rsi-notes/insights/#constraints) |
+
 ## 补充案例：Hermes
 
 Hermes 将任务中的有效流程与纠错经验整理为技能和持久记忆，在后续任务中复用、修订，对应 [L3 的经验积累](/rsi-notes/levels/l3/)。机制说明见 [Skills](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) 与 [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)。
@@ -61,4 +69,4 @@ Hermes 将任务中的有效流程与纠错经验整理为技能和持久记忆�
 - [Apex-35B 模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)：基础模型、研究轨迹与训练说明。
 - [Apex-Tune 结果仓库](https://github.com/apexin-ai/Apex-Tune-results)：NanoChat、fused attention、SimpleTES 与 TriMul 的脚本和结果。
 
-[阅读六条个人判断 →](/rsi-notes/insights/) · [回到首页 →](/rsi-notes/)
+[沿着效率、数据、验收与积累继续阅读 →](/rsi-notes/insights/) · [回到首页 →](/rsi-notes/)

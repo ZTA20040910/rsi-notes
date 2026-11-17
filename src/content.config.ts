@@ -36,6 +36,11 @@ const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
     ...common,
+    chapters: z.array(z.object({
+      id: z.enum(['efficiency', 'data', 'evaluation', 'inheritance']),
+      number: z.string(), label: z.string(), title: z.string(), intro: z.string(),
+      insightIds: z.array(insightId).min(1).max(2),
+    })).length(4).optional(),
     insights: z.array(z.object({
       id: insightId, number: z.string(), label: z.string(), title: z.string(), thesis: z.string(),
       evidence: z.string(),
@@ -43,6 +48,10 @@ const pages = defineCollection({
       reasoning: z.array(z.string()).min(2).max(3), choice: z.string(),
       connections: z.array(z.object({ id: insightId, text: z.string() })).min(1).max(2),
       cases: z.array(z.object({ label: z.string(), id: z.enum(['naive', 'recursive-first-steps', 'flint', 'apex']) })).min(1).max(2),
+      elaboration: z.object({
+        title: z.string(), paragraphs: z.array(z.string()).min(2).max(4),
+        sources: z.array(z.object({ label: z.string(), url: z.url() })).max(3),
+      }).optional(),
     })).length(6).optional(),
   }),
 });
