@@ -8,7 +8,7 @@ const presentation: Record<string, { object: string; relation: string; flow: str
   l2: { object: 'P · 当前任务的策略', relation: '策略优化', flow: ['执行与反馈', '发现问题', '调整策略'] },
   l3: { object: 'M · 可复用经验', relation: '经验积累与对照', flow: ['评估行为', '总结并保存经验', '用于下一轮'] },
   l4: { object: 'E · 运行环境与执行状态', relation: '边界对照', flow: ['人设规则与边界', '修改运行条件', '让经验落实到配置'] },
-  l5: { object: 'T、R · 任务与研究方法', relation: '边界对照', flow: ['自主安排研究任务', '改进研究方法', '下一代继续使用'] },
+  l5: { object: 'T、R · 任务与研究机制', relation: '边界对照', flow: ['自主安排研究任务', '改进研究机制', '下一代继续使用'] },
 };
 const caseNames = { naive: 'Naive', 'recursive-first-steps': 'Recursive', flint: 'Flint', apex: 'Apex' };
 const layers = (await getCollection('levels')).sort((a, b) => a.data.order - b.data.order).map(entry => ({

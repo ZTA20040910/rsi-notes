@@ -43,11 +43,11 @@ Apex-35B 是基于 Qwen3.6-35B-A3B 开发的文本模型，约 **35B 总参数�
 
 ### 把预算真正用到训练上
 
-在 DDPO 图像生成训练任务中，代理减少去噪开销、利用完整时间预算并保存训练检查点（checkpoint），让固定时间内的训练更充分。Apex 在既定任务和运行环境内优化训练策略，对应 [L2](/rsi-notes/levels/l2/)；负责研究的代理与被训练的目标模型，是两个不同对象。[AI for AI](https://www.apexin.com/apex-35b/#ai)
+在 DDPO 图像生成训练任务中，代理减少去噪开销、利用完整时间预算并保存训练检查点（checkpoint），让固定时间内的训练更充分。Apex 为目标模型选择训练方案 P，对应 [L2](/rsi-notes/levels/l2/)；改目标模型的训练流程，并不等于改研究代理自身的研究机制 R。[AI for AI](https://www.apexin.com/apex-35b/#ai)
 
 ### 把能力缺口转成下一轮数据
 
-Apex 的研发过程记录被用于训练；Apex Research 发现能力弱项后，针对性地生成、验证数据，再用于后续训练。它还调整数据的长度分布、长短轨迹采样比例和每批训练数据（batch）的组成，说明选什么与如何组织数据都影响训练。这提供了 [L3 的经验积累线索](/rsi-notes/levels/l3/)；我会继续追踪最终进入训练的数据，是否仍覆盖最初想补的弱项。[Building Through RSI](https://www.apexin.com/apex-35b/#ai) · [模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)
+Apex 的研发过程记录被用于 Apex 模型训练；Apex Research 发现能力弱项后，针对性地生成、验证数据，再用于后续模型开发。它还调整数据的长度分布、长短轨迹采样比例和每批训练数据（batch）的组成，说明选什么与如何组织数据都影响训练。这提供了经验 M 帮助后续任务的 [L3 线索](/rsi-notes/levels/l3/)；我会继续追踪最终进入训练的数据，是否仍覆盖最初想补的弱项。[Building Through RSI](https://www.apexin.com/apex-35b/#ai) · [模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)
 
 ### 让领域问题成为可执行的实验
 
