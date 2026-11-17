@@ -8,13 +8,13 @@
 .insights-route a { display: block; height: 100%; padding: 21px; background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--accent); text-decoration: none; }
 .insights-route a:hover { border-color: var(--accent); color: var(--ink); }
 .insights-map-label { display: flex; align-items: center; gap: 12px; color: var(--accent); font-size: 14px; }
-.insights-map-label > span:first-child { color: var(--orange); font: 21px/1 var(--serif); }
+.insights-map-label > span:first-child { color: var(--accent); font: 21px/1 var(--serif); }
 .insights-map-label > span:last-child { margin-left: auto; font-size: 20px; }
 .insights-route strong { display: block; margin-top: 17px; font: 22px/1.55 var(--serif); }
 .insights-chapters { display: grid; gap: 60px; }
 .insight-chapter { min-width: 0; scroll-margin-top: 25px; }
 .insight-chapter-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 45px; align-items: start; padding: 26px 0; border-top: 2px solid var(--accent); }
-.insight-chapter-heading > div > span { color: var(--orange); font-size: 14px; }
+.insight-chapter-heading > div > span { color: var(--accent); font-size: 14px; }
 .insight-chapter-heading h2 { margin: 13px 0 0; font-size: 32px; line-height: 1.4; }
 .insight-chapter-heading > p { margin: 0; font-size: 16px; line-height: 1.95; }
 .insight-essays { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; }
@@ -64,7 +64,7 @@
 .experience-path details { border: 1px solid var(--line); background: var(--paper); }
 .experience-path summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 88px; padding: 16px 13px; cursor: pointer; list-style: none; }
 .experience-path summary::-webkit-details-marker { display: none; }
-.experience-path summary > span:first-child { color: var(--orange); font: 20px/1 var(--serif); }
+.experience-path summary > span:first-child { color: var(--accent); font: 20px/1 var(--serif); }
 .experience-path summary strong { order: 1; flex-basis: 100%; font-size: 15px; font-weight: 600; }
 .experience-path summary > span:last-child { margin-left: auto; color: var(--accent); transition: transform .15s; }
 .experience-path details[open] { border-color: var(--accent); }

@@ -51,7 +51,9 @@ Apex 的研发轨迹被用于训练；Apex Research 识别能力缺口，生成�
 
 ### 让领域问题成为可执行的实验
 
-CFD 案例用 **Fourier 系数**表示翼片运动，再通过模拟器评价。机器人案例中，各比较模型共用 Vision MCP 的视觉后端；Apex 获得文字观察，组合成绩不能全部归为它自身的感知能力。Real2Sim 则重建可执行物理场景；这个环境产物还不能说明已实现按模型弱项持续生成学习环境的循环。[CFD 与 Robotics](https://www.apexin.com/apex-35b/#ai)
+CFD 案例用 **Fourier 系数**表示翼片运动，再通过模拟器评价；Real2Sim 则重建可执行物理场景。两者展示了把领域问题转为可执行实验的路径。[CFD 与 Real2Sim](https://www.apexin.com/apex-35b/#ai)
+
+机器人案例中，各比较模型共用 Vision MCP 的视觉后端，Apex 获得的是文字观察。因此这里的表现应结合感知工具与代理决策理解，不能全部归为文本模型自身的感知能力。[视觉输入方式](https://www.apexin.com/apex-35b/#ai)
 
 ## 理解与取舍
 
@@ -63,4 +65,4 @@ CFD 案例用 **Fourier 系数**表示翼片运动，再通过模拟器评价。
 
 我最终会分别看：研究是否可靠交付、目标模型是否改善，以及经验是否帮助下一次少走重复路径。轨迹数量增加，只有转成更好的起点和判断才有意义。
 
-[研究经验的两种载体 →](/rsi-notes/insights/#memory) · [实验环境与适用范围 →](/rsi-notes/insights/#environment)
+[带条件的经验怎样复用 →](/rsi-notes/insights/#memory) · [失败归因与学习环境 →](/rsi-notes/insights/#environment)

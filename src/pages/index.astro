@@ -147,7 +147,8 @@ const insights = [
   .insight-preview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px; }
   .insight-preview .insight-row { grid-template-columns: minmax(0, 1fr) 16px; gap: 12px; padding: 20px 0; border-top: 1px solid var(--line); }
   .insight-preview .insight-number { display: none; }
-  .insight-preview .tiny-label { color: var(--orange); font-size: 14px; }
+  .insight-preview .level-arrow { grid-column: 2; grid-row: 1; }
+  .insight-preview .tiny-label { color: var(--accent); font-size: 14px; }
   .insight-preview h3 { margin-top: 12px; font-size: 23px; line-height: 1.6; }
   @media (max-width: 768px) { .insight-preview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; } }
   @media (max-width: 480px) { .insight-preview h3 { font-size: 20px; } }
