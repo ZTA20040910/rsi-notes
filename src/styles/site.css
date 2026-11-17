@@ -80,19 +80,13 @@ hr { margin: 32px 0; border: 0; border-top: 1px solid var(--line); }
 .text-link:hover { text-decoration: underline; }
 .definition-panel { padding: 30px; background: var(--panel); border: 1px solid var(--line); }
 .definition-panel > h2 { margin: 0 0 16px; font-size: 26px; line-height: 1.4; }
-.definition-panel > p { font-size: 13px; }
+.definition-panel > p { font-size: 15px; }
 .formula { max-width: 100%; margin: 22px 0; overflow-x: auto; padding: 4px 0 10px; color: var(--ink); font-size: 16px; }
 .formula .katex-display { margin: .4em 0; text-align: left; }
 .formula .katex-display > .katex { text-align: left; }
-.recursion-note { margin: 20px 0; padding-left: 14px; border-left: 2px solid var(--accent); font-size: 13px; line-height: 1.85; }
+.recursion-note { margin: 20px 0 0; padding-left: 14px; border-left: 2px solid var(--accent); font-size: 15px; line-height: 1.85; }
 .recursion-note p { margin-bottom: 10px; }
 .tiny-label { display: block; margin-bottom: 8px; color: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.notation { margin-top: 18px; border-top: 1px solid var(--line); font-size: 12px; }
-.notation summary { padding: 14px 0 5px; color: var(--accent); }
-.notation dl { margin: 10px 0 0; }
-.notation dt { margin-top: 10px; font-weight: 600; }
-.notation dd { margin: 0; color: var(--muted); }
-.notation ul { padding-left: 18px; }
 
 .section { padding: 42px 0; }
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 25px; }

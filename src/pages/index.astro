@@ -7,13 +7,9 @@ import { href } from '../utils/paths';
 
 const posts = (await getCollection('posts')).sort((a, b) => a.data.order - b.data.order);
 const formula = katex.renderToString(
-  String.raw`S_{t+1}=\operatorname{Retain}\!\left(S_t,\ I_t(S_t,E_t);\ V_t\right)`,
+  String.raw`S_{t+1}=\operatorname{Loop}(S_t)`,
   { displayMode: true, throwOnError: true, output: 'htmlAndMathml' }
 );
-const mechanism = katex.renderToString(String.raw`\mathcal M_{t+1}\ne\mathcal M_t`, {
-  throwOnError: true,
-  output: 'htmlAndMathml',
-});
 const insights = [
   {
     number: '01',
@@ -44,7 +40,7 @@ const insights = [
 
 <Layout
   title="从一次改进到下一轮研究"
-  description="从 RSI 的符号定义与 B0–L5 自主权分层出发，理解 Naive、Recursive、Flint 与 Apex 的成果、机制和取舍。"
+  description="从研究循环与 B0–L5 自主权分层出发，理解 Naive、Recursive、Flint 与 Apex 的成果、机制和取舍。"
 >
   <div class="shell">
     <section class="hero" aria-labelledby="hero-title">
@@ -58,31 +54,13 @@ const insights = [
       </div>
 
       <aside class="definition-panel" aria-labelledby="definition-title">
-        <h2 id="definition-title">什么被继承，才是关键。</h2>
+        <h2 id="definition-title">把研究做成一个 Loop</h2>
+        <p>发现问题、尝试改动、验证效果，再把有效改动与可复用经验带入下一轮。</p>
         <div class="formula" set:html={formula}></div>
-        <p>经验促成候选改动，经过验收的改变被保留，成为下一轮的起点。</p>
+        <p><i>S</i> 是当前研究系统，包含模型、工具、经验和研究方法；一次 Loop，就是一轮研究。</p>
         <div class="recursion-note">
-          <p>进一步形成递归，需要 <span set:html={mechanism}></span>：AI 改进产生下一次改进的方法，并让后继继承、复用。</p>
+          <p><strong>递归更进一步：</strong>AI 还能自主改进如何提方案、做验证、选方向，并让后续研究继续使用这些改进。</p>
         </div>
-        <details class="notation">
-          <summary>展开符号释义</summary>
-          <dl>
-            <dt>t · 改进轮次</dt>
-            <dd>一次提出、验收和保留改变的轮次，不是 token 位置或训练 step。</dd>
-            <dt>S<sub>t</sub> · 系统状态</dt>
-            <dd>跨轮保留的参数、程序、工具、记忆或策略；不是当前答案本身。</dd>
-            <dt>E<sub>t</sub> · 经验</dt>
-            <dd>来自任务、环境、先前研究和反馈的信息。</dd>
-            <dt>I<sub>t</sub> · 改进器</dt>
-            <dd>依据当前状态和经验，提出候选改动。</dd>
-            <dt>V<sub>t</sub> · 验收机制</dt>
-            <dd>评价候选并应用接受规则；保留不等于真实能力必然提高。</dd>
-            <dt>Retain · 保留与继承</dt>
-            <dd>将被接受的改变纳入后继状态。下一轮从这里继续。</dd>
-            <dt>𝓜<sub>t</sub> · 改进机制</dt>
-            <dd>组织改进任务、生成候选、验证与选择改动、生成后继的机制。其变化指实际功能变化，不能用版本号改变代替。</dd>
-          </dl>
-        </details>
       </aside>
     </section>
 
