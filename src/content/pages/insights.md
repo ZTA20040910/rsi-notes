@@ -57,4 +57,4 @@ Recursive 复用实验历史、并行探索与合并分支；Apex 描述了研�
 
 ---
 
-这些 insight 解释各项进展为什么有用，而不把它们合并成“已经实现持续递归增长”的结论。[查看分层与证据边界](/rsi-notes/levels/l5/) · [追溯全部来源](/rsi-notes/references/)
+[改进机制如何递归继承 →](/rsi-notes/levels/l5/) · [参考资料 →](/rsi-notes/references/)

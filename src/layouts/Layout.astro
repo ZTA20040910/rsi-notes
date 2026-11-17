@@ -3,7 +3,7 @@ import '../styles/site.css';
 import 'katex/dist/katex.min.css';
 import { href } from '../utils/paths';
 interface Props { title?: string; description?: string; }
-const { title, description = '用 B0–L5 理解递归自我改进，阅读四份研究材料，形成自己的判断。' } = Astro.props;
+const { title, description = '关于递归自我改进（RSI）的研究博客，记录技术案例与个人思考。' } = Astro.props;
 const pageTitle = title ? `${title} · RSI Notes` : 'RSI Notes · 从一次改进到下一轮研究';
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const current = Astro.url.pathname;
@@ -40,8 +40,8 @@ const current = Astro.url.pathname;
     </header>
     <main id="main-content"><slot /></main>
     <footer class="site-footer shell">
-      <div><a class="footer-brand" href={href('/')}>RSI NOTES</a><p>从公开材料出发，追问改进如何被继承。</p></div>
-      <div class="footer-meta"><a href="https://github.com/ZTA20040910/rsi-notes">GitHub ↗</a><a href={href('/references/')}>来源与证据说明</a><span>资料核验 · 2026.11.17</span><span>Astro · <a href="https://github.com/satnaing/astro-paper">AstroPaper 改造</a></span></div>
+      <a class="footer-brand" href={href('/')}>RSI NOTES</a>
+      <div class="footer-meta"><a href="https://github.com/ZTA20040910/rsi-notes">GitHub ↗</a><a href={href('/references/')}>参考资料</a></div>
     </footer>
     <script>
       const button = document.querySelector<HTMLButtonElement>('#theme-toggle');

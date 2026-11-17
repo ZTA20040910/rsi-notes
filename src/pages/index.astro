@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import katex from 'katex';
 import Layout from '../layouts/Layout.astro';
+import LayerMap from '../components/LayerMap.astro';
 import { href } from '../utils/paths';
 
-const levels = (await getCollection('levels')).sort((a, b) => a.data.order - b.data.order);
 const posts = (await getCollection('posts')).sort((a, b) => a.data.order - b.data.order);
 const formula = katex.renderToString(
   String.raw`S_{t+1}=\operatorname{Retain}\!\left(S_t,\ I_t(S_t,E_t);\ V_t\right)`,
@@ -46,32 +46,20 @@ const insights = [
   <div class="shell">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> RSI · RESEARCH NOTES</p>
         <h1 id="hero-title">让一次改进，<br /><span class="accent-underline">进入下一轮研究。</span></h1>
         <p class="hero-intro">从四份研究材料出发，我关心的是：AI 改了什么，什么被留下，又由谁决定下一步怎么改。</p>
         <div class="hero-actions">
           <a class="button-primary" href="#levels">从 B0–L5 开始 <span aria-hidden="true">↗</span></a>
           <a class="text-link" href={href('/insights/')}>先看我的理解 <span aria-hidden="true">→</span></a>
         </div>
-        <div class="hero-meta">
-          <span>4 份材料</span>
-          <span>6 个分层入口</span>
-          <span>约 8 分钟主线阅读</span>
-        </div>
       </div>
 
       <aside class="definition-panel" aria-labelledby="definition-title">
-        <div class="panel-topline">
-          <span class="tiny-label">THE IMPROVEMENT LOOP</span>
-          <span class="tag">定义先行</span>
-        </div>
         <h2 id="definition-title">什么被继承，才是关键。</h2>
         <div class="formula" set:html={formula}></div>
         <p>经验促成候选改动，经过验收的改变被保留，成为下一轮的起点。</p>
         <div class="recursion-note">
-          <span class="tiny-label">递归还需要什么？</span>
-          <p><span set:html={mechanism}></span>：AI 自主提出或决定对改进机制的修改；修改被接受、继承，并实际用于后续改进。</p>
-          <p>主式只描述持久改进。改进器、评估或研究策略本身的改变与复用，才进一步触及递归。</p>
+          <p>进一步形成递归，需要 <span set:html={mechanism}></span>：AI 改进产生下一次改进的方法，并让后继继承、复用。</p>
         </div>
         <details class="notation">
           <summary>展开符号释义</summary>
@@ -92,43 +80,24 @@ const insights = [
             <dd>负责生成、评估、选择或固化后续改进的机制。其变化指实际功能变化，不能用版本号改变代替。</dd>
           </dl>
         </details>
-        <p class="definition-source">依据 survey §2.2 作出的符号化摘要，非论文原式。<a href={href('/references/#survey')}>定义与来源 ↗</a></p>
       </aside>
     </section>
 
     <section class="section" id="levels" aria-labelledby="levels-title">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">01 / 一张阅读地图</p>
-          <h2 id="levels-title">改进的责任，交给 AI 到哪一步？</h2>
+          <h2 id="levels-title">B0–L5：AI 自主决定什么？</h2>
         </div>
-        <p>从当前任务里的修订，到改进机制本身的继承。<br />选择一层，查看定义、案例和判断依据。</p>
+        <p>选择层级，展开案例与解读。</p>
       </div>
-      <ol class="level-list">
-        {levels.map((level) => (
-          <li>
-            <a class="level-row" data-level={level.data.code} href={href(`/levels/${level.id}/`)}>
-              <span class="level-code">{level.data.code}</span>
-              <div class="level-main">
-                <h3>{level.data.title.replace(/^[BL]\d\s*[·：:]?\s*/, '')}</h3>
-                <p>{level.data.question}</p>
-              </div>
-              <span class="level-evidence">{level.data.evidence}</span>
-              <span class="level-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-      <p class="section-note">B0 是非 RSI 参照层。层级描述自主决策范围，不是公司或模型的能力排名。四份材料的主要成果集中在 L2；Apex 提供 L3 机制线索，L4 与 L5 页面解释目前的证据边界。</p>
+      <LayerMap />
     </section>
 
     <section class="section" id="cases" aria-labelledby="cases-title">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">02 / 四份材料，四个切面</p>
           <h2 id="cases-title">成果 → 机制 → 理解与取舍</h2>
         </div>
-        <p>先讲清做成了什么，再解释为什么有效，<br />最后给出我的判断与成立条件。</p>
       </div>
       <div class="case-grid">
         {posts.map((post) => (
@@ -140,7 +109,6 @@ const insights = [
             <h3>{post.data.title}</h3>
             <p>{post.data.description}</p>
             <div class="case-bottom">
-              <span>{post.data.readingTime}</span>
               <span>读案例 <span aria-hidden="true">↗</span></span>
             </div>
           </a>
@@ -151,7 +119,6 @@ const insights = [
     <section class="section" id="insights" aria-labelledby="insights-title">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">03 / 我的理解</p>
           <h2 id="insights-title">我会带走的三个判断。</h2>
         </div>
         <a class="text-link" href={href('/insights/')}>阅读全部六条 insight <span aria-hidden="true">→</span></a>
@@ -171,12 +138,5 @@ const insights = [
       </div>
     </section>
 
-    <aside class="reading-note">
-      <div>
-        <span class="tiny-label">ABOUT THESE NOTES</span>
-        <p>这是一份对公开材料的理解展示。作者报告、公开数字复核、个人判断与条件推测分别说明；没有将它们当作独立复现结果。</p>
-      </div>
-      <a class="text-link" href={href('/references/')}>来源与证据边界 <span aria-hidden="true">↗</span></a>
-    </aside>
   </div>
 </Layout>

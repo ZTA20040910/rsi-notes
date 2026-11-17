@@ -10,17 +10,18 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "verify": "python3 scripts/check_site.py"
+    "verify": "python3 scripts/check_site.py && node --test scripts/check_layer_map.mjs"
   },
   "dependencies": {
-    "astro": "7.4.8",
     "@astrojs/markdown-remark": "7.3.6",
+    "astro": "7.4.8",
     "katex": "^0.16.22",
-    "remark-math": "^6.0.0",
-    "rehype-katex": "^7.0.1"
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
+    "linkedom": "0.18.15",
     "typescript": "6.0.3"
   }
 }

@@ -1,0 +1,231 @@
+---
+import { href } from '../utils/paths';
+
+const cases = {
+  naive: { name: 'Naive', path: '/posts/naive/' },
+  recursive: { name: 'Recursive', path: '/posts/recursive-first-steps/' },
+  flint: { name: 'Flint', path: '/posts/flint/' },
+  apex: { name: 'Apex', path: '/posts/apex/' },
+};
+type CaseId = keyof typeof cases;
+type Layer = {
+  id: string; code: string; title: string; object: string; relation: string;
+  question: string; description: string; flow: string[];
+  cases: { id: CaseId; text: string }[];
+};
+const layers: Layer[] = [
+  {
+    id: 'b0', code: 'B0', title: '修订当前任务', object: '当前输出', relation: '任务片段 · 非 RSI 参照',
+    question: '这次做得更好，下次留下了什么？',
+    description: '反馈帮助当前答案变好。若经验没有进入后续独立任务使用的系统状态，循环仍停留在任务内部。',
+    flow: ['执行任务', '读取反馈', '修订输出'],
+    cases: [{ id: 'apex', text: '机器人交互演示：执行代码、接收反馈，再修订当前行为。' }],
+  },
+  {
+    id: 'l1', code: 'L1', title: '执行既定改进', object: '持久状态', relation: '执行环节',
+    question: '改进能否被执行，并留下来？',
+    description: '人规定更新方法和接受标准，AI 执行。被接受的改变进入后继系统，开始跨越一次任务的边界。',
+    flow: ['既定流程', '执行与验收', '保留更新'],
+    cases: [
+      { id: 'naive', text: '候选实现与验证，把采纳、失败和回滚落实为系统版本。' },
+      { id: 'flint', text: '把蒸馏、训练与推理实现落实为可交付的模型和程序。' },
+      { id: 'apex', text: '运行训练、使用预算并保存有效 checkpoint。' },
+    ],
+  },
+  {
+    id: 'l2', code: 'L2', title: '选择研究策略', object: '下一项干预', relation: '主要案例',
+    question: '看过结果后，下一步值得改什么？',
+    description: 'AI 根据反馈选择训练、架构或系统干预；人仍可设定目标、预算与验收标准。四份材料的主要研究过程集中在这里。',
+    flow: ['观察结果', '选择干预', '验证与保留'],
+    cases: [
+      { id: 'naive', text: '从局部优化回到完整模型，决定采纳、回滚还是停止。' },
+      { id: 'recursive', text: '复用研究历史，在训练方案与 GPU kernel 上搜索。' },
+      { id: 'flint', text: '架构、量化与精度恢复协同选择，追踪变化的瓶颈。' },
+      { id: 'apex', text: '在训练预算内调整方法，让研究方案成为有效产物。' },
+    ],
+  },
+  {
+    id: 'l3', code: 'L3', title: '决定从什么学习', object: '未来学习经验', relation: '机制线索',
+    question: '现在的我，接下来应该学什么？',
+    description: '当前能力与失败影响未来学习经验，更新后的状态再影响下一轮选择。Apex 的定向数据回流提供了线索，多轮依赖仍需进一步展开。',
+    flow: ['能力与失败', '选择学习经验', '更新后再选择'],
+    cases: [{ id: 'apex', text: '根据能力缺口生成、验证定向数据，纳入后续开发。' }],
+  },
+  {
+    id: 'l4', code: 'L4', title: '持续适应环境', object: '后续任务行为', relation: '边界对照',
+    question: '运行中的经验，怎样改变下一次行为？',
+    description: '环境反馈转为持久的记忆、技能或更新，并在后续独立任务中使用。下列案例分别展示反馈与历史复用，尚未闭合完整的持续适应链。',
+    flow: ['环境交互', '持久更新', '后续任务使用'],
+    cases: [
+      { id: 'apex', text: '模拟环境中的反馈，距离跨任务持续适应还差什么？' },
+      { id: 'recursive', text: '研究历史被复用，是否等同于运行 agent 的持续适应？' },
+    ],
+  },
+  {
+    id: 'l5', code: 'L5', title: '改进改进机制', object: '产生改进的方法', relation: '边界对照',
+    question: '产生下一次改进的方法，能否一起进化？',
+    description: 'AI 修改改进器、评估器或研究策略，让后继实际继承、复用。更快的产物和经验回流能够帮助下一轮，但尚不足以确认完整的递归闭环。',
+    flow: ['修改改进机制', '接受与继承', '用于后续改进'],
+    cases: [
+      { id: 'flint', text: '更快的研究产物，如何转为下一轮研发的优势？' },
+      { id: 'recursive', text: '继承实验历史，与继承改进后的研究机制有何区别？' },
+      { id: 'apex', text: '训练经验回到开发流程，何时才构成机制的递归继承？' },
+    ],
+  },
+];
+---
+
+<div class="layer-explorer" data-layer-explorer>
+  <div class="layer-diagram">
+    <div class="layer-axis" aria-hidden="true"><span>自主决策范围</span><i></i></div>
+    <div class="layer-stack" role="group" aria-label="选择自主权层级">
+      {layers.toReversed().map((layer, index) => (
+        <div class:list={['layer-step', { 'is-selected': layer.id === 'l2' }]} style={`--step: ${5 - index}`} data-layer-step={layer.id}>
+          <a class="layer-select" href={href(`/levels/${layer.id}/`)} data-layer-select={layer.id}>
+            <span class="layer-code">{layer.code}</span>
+            <span class="layer-label"><strong>{layer.title}</strong><span>{layer.object}</span></span>
+            <span class="layer-indicator" aria-hidden="true">↗</span>
+          </a>
+          <div class="layer-case-strip">
+            <span class="layer-relation">{layer.relation}</span>
+            {layer.cases.map((item) => <a href={href(cases[item.id].path)} aria-label={`${layer.code} ${layer.relation}：阅读 ${cases[item.id].name}`}>{cases[item.id].name}</a>)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="layer-details">
+    {layers.map((layer) => (
+      <section class="layer-panel" id={`layer-panel-${layer.id}`} data-layer-panel={layer.id} hidden={layer.id !== 'l2'} aria-labelledby={`layer-title-${layer.id}`}>
+        <div class="layer-panel-top"><span>{layer.code}</span><span>{layer.object}</span></div>
+        <h3 id={`layer-title-${layer.id}`}>{layer.question}</h3>
+        <p class="layer-description">{layer.description}</p>
+        <ol class="layer-flow" aria-label={`${layer.code} 的改进过程`}>
+          {layer.flow.map((step) => <li>{step}</li>)}
+        </ol>
+        <div class="layer-readings">
+          <h4>{layer.relation}</h4>
+          {layer.cases.map((item) => (
+            <a class="layer-reading" href={href(cases[item.id].path)}>
+              <span><strong>{cases[item.id].name}</strong><span>{item.text}</span></span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+        <a class="layer-deep-link" href={href(`/levels/${layer.id}/`)}>进入 {layer.code} 详细解读 <span aria-hidden="true">→</span></a>
+      </section>
+    ))}
+  </div>
+</div>
+
+<script>
+  const explorer = document.querySelector<HTMLElement>('[data-layer-explorer]');
+  if (explorer) {
+    const controls = Array.from(explorer.querySelectorAll<HTMLAnchorElement>('[data-layer-select]'));
+    const panels = Array.from(explorer.querySelectorAll<HTMLElement>('[data-layer-panel]'));
+    const steps = Array.from(explorer.querySelectorAll<HTMLElement>('[data-layer-step]'));
+    const select = (id: string) => {
+      controls.forEach((control) => control.setAttribute('aria-pressed', String(control.dataset.layerSelect === id)));
+      panels.forEach((panel) => { panel.hidden = panel.dataset.layerPanel !== id; });
+      steps.forEach((step) => step.classList.toggle('is-selected', step.dataset.layerStep === id));
+    };
+    controls.forEach((control, index) => {
+      control.setAttribute('role', 'button');
+      control.setAttribute('aria-controls', `layer-panel-${control.dataset.layerSelect}`);
+      control.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        select(control.dataset.layerSelect!);
+        if (event.detail > 0 && window.matchMedia('(max-width: 768px)').matches) {
+          const selected = panels.find((panel) => !panel.hidden);
+          selected?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        }
+      });
+      control.addEventListener('keydown', (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        let next = index;
+        if (event.key === 'ArrowDown') next = (index + 1) % controls.length;
+        else if (event.key === 'ArrowUp') next = (index - 1 + controls.length) % controls.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = controls.length - 1;
+        else if (event.key !== ' ' && event.key !== 'Enter') return;
+        event.preventDefault();
+        select(controls[next].dataset.layerSelect!);
+        controls[next].focus();
+      });
+    });
+    select('l2');
+  }
+</script>
+
+<style>
+  .layer-explorer { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 34px; align-items: start; }
+  .layer-diagram { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 15px; padding-top: 8px; }
+  .layer-axis { position: relative; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 18px 0; color: var(--muted); }
+  .layer-axis span { writing-mode: vertical-rl; font-size: 12px; letter-spacing: .18em; }
+  .layer-axis i { position: relative; flex: 1; width: 1px; background: var(--line); }
+  .layer-axis i::before { position: absolute; top: 0; left: -3px; width: 7px; height: 7px; content: ''; border-left: 1px solid var(--muted); border-top: 1px solid var(--muted); transform: rotate(45deg); }
+  .layer-stack { display: grid; gap: 13px; }
+  .layer-step { position: relative; margin-left: calc(var(--step) * 12px); border: 1px solid var(--line); border-radius: 4px; background: var(--card); box-shadow: 0 4px 0 var(--line); transition: border-color .18s, background .18s; }
+  .layer-step:hover { border-color: var(--accent); }
+  .layer-select { display: grid; grid-template-columns: 48px minmax(0, 1fr) 20px; align-items: center; gap: 12px; padding: 14px 18px 9px; text-decoration: none; }
+  .layer-select:hover { color: inherit; }
+  .layer-code { color: var(--accent); font: 32px/1 var(--serif); letter-spacing: -.04em; }
+  .layer-label { display: flex; flex-wrap: wrap; gap: 3px 14px; align-items: baseline; }
+  .layer-label strong { font-size: 16px; font-weight: 600; }
+  .layer-label > span { color: var(--muted); font-size: 12px; }
+  .layer-indicator { color: var(--muted); font-size: 20px; }
+  .layer-case-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 9px; padding: 0 18px 12px; font-size: 11px; }
+  .layer-relation { color: var(--muted); }
+  .layer-case-strip a { display: inline-flex; align-items: center; min-height: 26px; padding: 0 5px; color: var(--accent); background: var(--panel); border-radius: 2px; text-decoration: none; }
+  .layer-case-strip a:hover { text-decoration: underline; }
+  .layer-step.is-selected { border-color: var(--accent); background: var(--panel); box-shadow: 0 4px 0 var(--accent); }
+  .is-selected .layer-indicator { color: var(--accent); }
+  .is-selected .layer-case-strip a { background: var(--card); }
+  .layer-step.is-selected::after { position: absolute; right: -7px; top: 24px; width: 12px; height: 12px; content: ''; background: var(--panel); border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); transform: rotate(45deg); }
+  .layer-details { min-width: 0; border: 1px solid var(--line); border-top: 3px solid var(--accent); background: var(--card); border-radius: 4px; }
+  .layer-panel { padding: 26px; scroll-margin-top: 20px; }
+  .layer-panel[hidden] { display: none; }
+  .layer-panel-top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: var(--accent); }
+  .layer-panel-top > span:first-child { font: 36px/1 var(--serif); }
+  .layer-panel-top > span:last-child { padding-left: 12px; border-left: 1px solid var(--line); font-size: 13px; }
+  .layer-panel h3 { margin-bottom: 14px; font-size: 28px; line-height: 1.4; }
+  .layer-description { margin-bottom: 20px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+  .layer-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; margin: 0 0 24px; padding: 0; list-style: none; }
+  .layer-flow li { position: relative; display: grid; place-items: center; padding: 9px 4px; background: var(--panel); color: var(--accent); font-size: 12px; text-align: center; line-height: 1.5; }
+  .layer-flow li:not(:last-child)::after { content: '→'; position: absolute; right: -15px; color: var(--muted); }
+  .layer-readings h4 { margin-bottom: 5px; color: var(--muted); font-size: 12px; font-weight: 500; }
+  .layer-reading { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .layer-reading strong { color: var(--accent); font-size: 14px; font-weight: 600; }
+  .layer-reading > span > span { display: block; color: var(--muted); font-size: 13px; line-height: 1.7; }
+  .layer-reading > span:last-child { color: var(--accent); font-size: 20px; }
+  .layer-reading:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+  .layer-deep-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; padding: 12px 16px; background: var(--accent); color: var(--paper); font-size: 13px; text-decoration: none; }
+  .layer-deep-link:hover { background: var(--accent-hover); color: var(--paper); }
+  @media (max-width: 1000px) {
+    .layer-explorer { gap: 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .layer-diagram { grid-template-columns: 14px minmax(0, 1fr); gap: 9px; }
+    .layer-step { margin-left: calc(var(--step) * 6px); }
+    .layer-select { padding-inline: 12px; grid-template-columns: 38px minmax(0, 1fr) 18px; gap: 8px; }
+    .layer-case-strip { padding-inline: 12px; }
+    .layer-panel { padding: 22px; }
+    .layer-panel h3 { font-size: 25px; }
+  }
+  @media (max-width: 768px) {
+    .layer-explorer { grid-template-columns: 1fr; gap: 25px; }
+    .layer-step { margin-left: calc(var(--step) * 12px); }
+    .layer-details { scroll-margin-top: 20px; }
+    .layer-step.is-selected::after { display: none; }
+  }
+  @media (max-width: 480px) {
+    .layer-step { margin-left: calc(var(--step) * 6px); }
+    .layer-select { padding-top: 11px; }
+    .layer-label strong { font-size: 15px; }
+    .layer-label > span { display: none; }
+    .layer-code { font-size: 29px; }
+    .layer-case-strip { font-size: 11px; gap: 4px 7px; padding-bottom: 10px; }
+    .layer-panel { padding: 20px; }
+    .layer-panel h3 { font-size: 24px; }
+  }
+</style>

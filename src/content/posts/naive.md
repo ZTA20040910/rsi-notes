@@ -9,11 +9,11 @@ readingTime: "5 分钟"
 insight: "推理速度可能影响哪些经验进入训练，但更快不必然学得更好。"
 ---
 
-Naive 的材料把模型架构、推理引擎与长轨迹学习放在同一条研发链上。本文将其中反馈驱动的研发机制映射到 [L2：改进策略自主权](/rsi-notes/levels/l2/)，重点看它如何选择干预、验收结果，以及保留有效方案。这是依据指定材料作出的分析。
+Naive 的材料把模型架构、推理引擎与长轨迹学习放在同一条研发链上。其中反馈驱动的研发过程体现了 [L2：改进策略自主权](/rsi-notes/levels/l2/)：选择干预、验收结果，再保留有效方案。
 
 ## 成果
 
-Naive-N0.5-Flash 是基于 MiMo-V2.5 的 309B MoE，单 token 激活约 15.5B 参数，采用滑动窗口与稀疏注意力。NaiveRT 的公开记录披露了 **151 次试验：63 次采纳、71 次失败或回滚、17 次探索其他分支**。这些是作者报告的研发过程，并非本文独立复现。[模型卡](https://huggingface.co/NaiveAI/Naive-N0.5-Flash)、[研究页](https://naive.ai/en/research/)
+Naive-N0.5-Flash 是基于 MiMo-V2.5 的 309B MoE，单 token 激活约 15.5B 参数，采用滑动窗口与稀疏注意力。NaiveRT 的公开记录披露了 **151 次试验：63 次采纳、71 次失败或回滚、17 次探索其他分支**。[模型卡](https://huggingface.co/NaiveAI/Naive-N0.5-Flash)、[研究页](https://naive.ai/en/research/)
 
 速度需要连同口径理解。关闭 thinking 时，公开记录的跨请求生成速率为 **1,719 tokens/s**，最佳一秒峰值为 **2,122 tokens/s**。条件是八张 Blackwell、单活跃序列、HTML/SVG 生成任务；排除 prefill 和 finalization，并剔除重复循环请求。这不能直接换算成多用户吞吐或完整研究任务的加速。[NaiveRT Performance](https://github.com/NaiveAI-Labs/NaiveRT)
 

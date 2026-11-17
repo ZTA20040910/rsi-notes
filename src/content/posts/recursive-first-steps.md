@@ -23,7 +23,7 @@ NanoGPT 的公开重复运行记录提供了一个具体切面：
 | 平均训练时间 | 80.6114 秒 | 77.3376 秒 |
 | 平均验证 loss | 3.27850 | 3.27893 |
 
-按这些记录复核，平均时间减少 **3.2738 秒，约 4.06%**，速度比约 1.0423×。这是公开数字复核，没有重新执行训练，也未独立验证日志真实性。博客中的 79.7→77.5 秒属于另一呈现口径，不能混用，更不能将这些自报记录写成已获官方榜单确认的纪录。[基线记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/baseline_logs/statistics.md)、[候选记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/reproducibility_logs/statistics.md)、[产物说明](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/README.md)
+按这两组公开记录计算，平均时间减少 **3.2738 秒，约 4.06%**，速度比约 1.0423×。原文的 79.7→77.5 秒采用另一呈现口径，不能与这里的均值混用。[基线记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/baseline_logs/statistics.md)、[候选记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/from_best/reproducibility_logs/statistics.md)、[产物说明](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanoGPT_speedrun/README.md)
 
 NanoChat 则在单 B200、每次训练五分钟的约束下比较方案，以越低越好的 BPB 衡量质量。**五分钟是最终训练执行预算，不是完整研究搜索成本。**[NanoChat 记录](https://github.com/recursive-org/first-steps-toward-automated-ai-research/blob/main/nanochat_autoresearch/README.md)
 
