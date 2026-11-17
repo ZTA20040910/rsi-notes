@@ -12,8 +12,23 @@ const posts = defineCollection({
     takeaways: z.array(z.object({ title: z.string(), text: z.string() })).min(2).max(3),
   }),
 });
-const levels = defineCollection({ loader: glob({ pattern: '**/*.md', base: './src/content/levels' }), schema: z.object({ ...common, code: z.string(), order: z.number(), question: z.string(), scope: z.string(), evidence: z.string() }) });
 const insightId = z.enum(['bottleneck', 'experience-speed', 'constraints', 'verification', 'environment', 'memory']);
+const levels = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/levels' }),
+  schema: z.object({
+    ...common,
+    code: z.string(), order: z.number(), question: z.string(), scope: z.string(), evidence: z.string(),
+    definition: z.string(), judgment: z.string(), sourceSection: z.string(),
+    focus: z.array(z.object({ label: z.string(), text: z.string() })).length(3),
+    fromPrevious: z.object({ title: z.string(), before: z.string(), after: z.string(), difference: z.string() }).optional(),
+    cases: z.array(z.object({
+      id: z.enum(['naive', 'recursive-first-steps', 'flint', 'apex']),
+      label: z.string(), relation: z.string(), observation: z.string(), meaning: z.string(),
+    })).min(1).max(4),
+    insightLinks: z.array(z.object({ id: insightId, label: z.string() })).min(1).max(2),
+    distinctions: z.array(z.object({ title: z.string(), text: z.string() })).length(2).optional(),
+  }),
+});
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({

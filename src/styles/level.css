@@ -1,0 +1,108 @@
+.level-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 60px; align-items: center; margin: 40px 0 35px; }
+.level-badge { display: inline-block; margin-bottom: 18px; color: var(--accent); font: 56px/1 var(--serif); letter-spacing: -.04em; }
+.level-heading h1 { margin: 0 0 18px; font-size: clamp(33px, 3.8vw, 45px); line-height: 1.35; letter-spacing: -.035em; }
+.level-heading > p { margin: 0; color: var(--muted); font-size: 18px; line-height: 1.85; }
+.level-definition { padding: 29px 30px; border: 1px solid var(--line); border-top: 3px solid var(--orange); background: var(--panel); }
+.level-definition h2 { margin: 0 0 14px; color: var(--accent); font: 600 14px/1.6 var(--sans); }
+.level-definition p { margin: 0; font-size: 18px; line-height: 1.95; }
+.level-detail-nav { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 9px; margin-bottom: 28px; }
+.level-detail-nav a { padding: 12px 10px; border: 1px solid var(--line); text-decoration: none; text-align: center; background: var(--card); }
+.level-detail-nav a > span:first-child { display: block; margin-bottom: 5px; color: var(--accent); font: 25px/1.2 var(--serif); }
+.level-detail-nav a > span:last-child { display: block; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.level-detail-nav a:hover { border-color: var(--accent); }
+.level-detail-nav a[aria-current="page"] { border-color: var(--accent); background: var(--accent); }
+.level-detail-nav a[aria-current="page"] > span { color: var(--paper); }
+.level-focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 45px; border: 1px solid var(--line); background: var(--card); }
+.level-focus > div { padding: 24px; }
+.level-focus > div + div { border-left: 1px solid var(--line); }
+.level-focus dt { margin-bottom: 12px; color: var(--accent); font-size: 15px; font-weight: 600; }
+.level-focus dd { margin: 0; font-size: 15px; line-height: 1.85; }
+.level-section { margin-bottom: 43px; }
+.level-section-heading { display: flex; align-items: baseline; gap: 15px; margin-bottom: 21px; }
+.level-section-heading > span { color: var(--orange); font: 22px/1.3 var(--serif); }
+.level-section-heading h2 { margin: 0; font-size: 30px; line-height: 1.5; }
+.level-comparisons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.level-comparison { min-width: 0; display: flex; flex-direction: column; padding: 26px; border: 1px solid var(--line); background: var(--card); }
+.level-comparison header > span { color: var(--accent); font: 24px/1.4 var(--serif); }
+.level-comparison h3 { margin: 9px 0 20px; font-size: 24px; line-height: 1.5; }
+.level-comparison dl { display: grid; gap: 10px; margin: 0 0 18px; }
+.level-comparison dl > div { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 15px; padding: 15px; background: var(--paper); border-left: 2px solid var(--line); }
+.level-comparison dl > div.current-level { border-left-color: var(--accent); background: var(--panel); }
+.level-comparison dt { color: var(--accent); font: 21px/1.5 var(--serif); }
+.level-comparison dd { margin: 0; font-size: 15px; line-height: 1.8; }
+.level-difference { margin: 0 0 22px; font-size: 16px; line-height: 1.85; }
+.level-comparison > a { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; color: var(--accent); font-size: 13px; text-decoration: none; }
+.level-comparison > a:hover { text-decoration: underline; }
+.single-comparison { grid-template-columns: 1fr; }
+.single-comparison .level-comparison dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.level-distinctions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.level-distinctions > article { padding: 25px; background: var(--panel); border-left: 3px solid var(--orange); }
+.level-distinctions h3 { margin: 0 0 12px; color: var(--accent); font-size: 24px; }
+.level-distinctions p { margin: 0; font-size: 16px; line-height: 1.85; }
+.level-case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.level-case-card { display: flex; flex-direction: column; min-width: 0; padding: 26px; border: 1px solid var(--line); background: var(--card); }
+.level-case-card header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.level-case-card h3 { margin: 0; font-size: 26px; }
+.level-case-card header > span { padding: 3px 9px; border: 1px solid var(--line); color: var(--accent); font-size: 12px; }
+.level-case-observation { margin: 0 0 20px; font-size: 16px; line-height: 1.85; }
+.level-case-reason { flex: 1; padding: 18px 20px; background: var(--panel); }
+.level-case-reason h4 { margin: 0 0 9px; color: var(--accent); font-size: 13px; font-weight: 600; }
+.level-case-reason p { margin: 0; font-size: 15px; line-height: 1.85; }
+.level-case-card > a { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; min-height: 28px; color: var(--accent); font-size: 14px; text-decoration: none; }
+.level-case-card > a:hover { text-decoration: underline; }
+.single-case { grid-template-columns: 1fr; }
+.single-case .level-case-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 30px; }
+.single-case .level-case-card header { grid-column: 1 / -1; }
+.single-case .level-case-card > a { grid-column: 1 / -1; }
+.level-judgment { padding: 30px 33px; background: var(--panel); border-left: 3px solid var(--orange); }
+.level-judgment h2 { margin: 0 0 18px; font-size: 27px; line-height: 1.6; }
+.level-judgment p { margin: 0; font-size: 16px; line-height: 1.95; }
+.level-judgment nav { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 22px; }
+.level-judgment nav a { min-height: 28px; color: var(--accent); font-size: 14px; text-decoration: none; }
+.level-judgment nav a:hover { text-decoration: underline; }
+.level-definition-source { margin-top: 25px; color: var(--muted); font-size: 13px; }
+.level-neighbors { display: flex; justify-content: space-between; gap: 25px; margin-top: 32px; padding-top: 25px; border-top: 1px solid var(--line); }
+.level-neighbors a { display: flex; align-items: center; gap: 12px; max-width: 48%; color: var(--accent); font-size: 15px; text-decoration: none; }
+.level-neighbors a:last-child { margin-left: auto; text-align: right; }
+.level-neighbors a:hover { text-decoration: underline; }
+@media (max-width: 1000px) {
+  .level-hero { gap: 32px; }
+  .level-definition { padding: 25px; }
+  .level-heading h1 { font-size: 37px; }
+  .level-detail-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .level-focus > div { padding: 21px; }
+  .level-comparison, .level-case-card { padding: 23px; }
+}
+@media (max-width: 768px) {
+  .level-hero { grid-template-columns: 1fr; gap: 25px; margin-top: 26px; }
+  .level-badge { font-size: 46px; margin-bottom: 14px; }
+  .level-heading > p { font-size: 17px; }
+  .level-definition p { font-size: 17px; }
+  .level-focus { grid-template-columns: 1fr; margin-bottom: 35px; }
+  .level-focus > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .level-focus dt { margin-bottom: 7px; }
+  .level-comparisons, .level-case-grid { grid-template-columns: 1fr; gap: 17px; }
+  .single-case .level-case-card { display: flex; }
+  .single-comparison .level-comparison dl { grid-template-columns: 1fr; }
+  .level-section-heading h2 { font-size: 27px; }
+  .level-distinctions { grid-template-columns: 1fr; gap: 16px; }
+  .level-judgment { padding: 27px; }
+}
+@media (max-width: 480px) {
+  .level-heading h1 { font-size: 32px; }
+  .level-definition { padding: 22px; }
+  .level-definition p { font-size: 16px; }
+  .level-detail-nav a { padding: 10px 7px; }
+  .level-detail-nav a > span:first-child { font-size: 23px; }
+  .level-detail-nav a > span:last-child { font-size: 11px; }
+  .level-comparison, .level-case-card { padding: 21px; }
+  .level-comparison h3 { font-size: 22px; }
+  .level-comparison dl > div { padding: 13px; gap: 10px; grid-template-columns: 32px minmax(0, 1fr); }
+  .level-section-heading { gap: 11px; }
+  .level-section-heading h2 { font-size: 25px; }
+  .level-case-reason { padding: 16px; }
+  .level-case-card h3 { font-size: 24px; }
+  .level-judgment { padding: 22px; }
+  .level-judgment h2 { font-size: 23px; }
+  .level-neighbors a { font-size: 13px; gap: 8px; }
+}

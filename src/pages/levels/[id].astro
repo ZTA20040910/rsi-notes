@@ -2,20 +2,103 @@
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import '../../styles/level.css';
 import { href } from '../../utils/paths';
 export async function getStaticPaths() { return (await getCollection('levels')).map(entry => ({ params: { id: entry.id }, props: { entry } })); }
 interface Props { entry: CollectionEntry<'levels'>; }
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content } = await render(entry);
 const levels = (await getCollection('levels')).sort((a,b) => a.data.order-b.data.order);
 const previous = levels[entry.data.order-1];
 const next = levels[entry.data.order+1];
+const comparisons = [];
+if (previous) {
+  if (!entry.data.fromPrevious) throw new Error(`Missing adjacent comparison for ${entry.id}`);
+  comparisons.push({ before: previous, after: entry, other: previous, content: entry.data.fromPrevious });
+}
+if (next) {
+  if (!next.data.fromPrevious) throw new Error(`Missing adjacent comparison for ${next.id}`);
+  comparisons.push({ before: entry, after: next, other: next, content: next.data.fromPrevious });
+}
 ---
-<Layout title={entry.data.title} description={entry.data.description}>
-  <div class="article-shell shell">
+<Layout title={`${entry.data.code} · ${entry.data.title}`} description={entry.data.description}>
+  <div class="article-shell shell level-page">
     <nav class="breadcrumb" aria-label="面包屑"><a href={href('/')}>首页</a><span>/</span><a href={href('/#levels')}>层级地图</a><span>/</span><span>{entry.data.code}</span></nav>
-    <header class="article-header"><div class="section-kicker">{entry.data.code}</div><h1>{entry.data.title}</h1><p class="article-lead">{entry.data.description}</p></header>
-    <nav class="level-tabs" aria-label="层级导航">{levels.map(level => <a href={href(`/levels/${level.id}/`)} aria-current={level.id===entry.id?'page':undefined}>{level.data.code}</a>)}</nav>
-    <div class="article-grid"><article class="prose"><aside class="key-question"><p>{entry.data.question}</p></aside><Content /><nav class="article-neighbors" aria-label="相邻层级"><div>{previous && <a href={href(`/levels/${previous.id}/`)}>← {previous.data.code} · 上一层</a>}</div><div>{next && <a href={href(`/levels/${next.id}/`)}>{next.data.code} · 下一层 →</a>}</div></nav></article><aside class="article-toc"><span class="tiny-label">本页内容</span><ol>{headings.filter(h=>h.depth===2).map(h=><li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol><a class="toc-return" href={href('/#levels')}>← 返回层级地图</a></aside></div>
+    <header class="level-hero">
+      <div class="level-heading">
+        <span class="level-badge">{entry.data.code}</span>
+        <h1>{entry.data.title}</h1>
+        <p>{entry.data.question}</p>
+      </div>
+      <section class="level-definition" aria-labelledby="definition-title">
+        <h2 id="definition-title">核心定义</h2>
+        <p>{entry.data.definition}</p>
+      </section>
+    </header>
+
+    <nav class="level-detail-nav" aria-label="自主权层级">
+      {levels.map(level => (
+        <a href={href(`/levels/${level.id}/`)} aria-current={level.id === entry.id ? 'page' : undefined}>
+          <span>{level.data.code}</span><span>{level.data.title}</span>
+        </a>
+      ))}
+    </nav>
+
+    <dl class="level-focus" aria-label={`${entry.data.code} 的决策范围与保留对象`}>
+      {entry.data.focus.map(item => <div><dt>{item.label}</dt><dd>{item.text}</dd></div>)}
+    </dl>
+
+    <section class="level-section" aria-labelledby="comparison-title">
+      <div class="level-section-heading"><span aria-hidden="true">01</span><h2 id="comparison-title">与相邻层的区别</h2></div>
+      <div class:list={['level-comparisons', { 'single-comparison': comparisons.length === 1 }]}>
+        {comparisons.map(pair => (
+          <article class="level-comparison" data-before={pair.before.id} data-after={pair.after.id}>
+            <header><span>{pair.before.data.code} / {pair.after.data.code}</span><h3>{pair.content.title}</h3></header>
+            <dl>
+              <div class:list={{ 'current-level': pair.before.id === entry.id }}><dt>{pair.before.data.code}</dt><dd>{pair.content.before}</dd></div>
+              <div class:list={{ 'current-level': pair.after.id === entry.id }}><dt>{pair.after.data.code}</dt><dd>{pair.content.after}</dd></div>
+            </dl>
+            <p class="level-difference">{pair.content.difference}</p>
+            <a href={href(`/levels/${pair.other.id}/`)}>阅读 {pair.other.data.code} · {pair.other.data.title} <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    {entry.data.distinctions && (
+      <section class="level-section" aria-labelledby="distinctions-title">
+        <div class="level-section-heading"><h2 id="distinctions-title">结构与收益，分别判断</h2></div>
+        <div class="level-distinctions">
+          {entry.data.distinctions.map(item => <article><h3>{item.title}</h3><p>{item.text}</p></article>)}
+        </div>
+      </section>
+    )}
+
+    <section class="level-section" aria-labelledby="case-relations-title">
+      <div class="level-section-heading"><span aria-hidden="true">02</span><h2 id="case-relations-title">案例与这一层的关系</h2></div>
+      <div class:list={['level-case-grid', { 'single-case': entry.data.cases.length === 1 }]}>
+        {entry.data.cases.map(item => (
+          <article class="level-case-card">
+            <header><h3>{item.label}</h3><span>{item.relation}</span></header>
+            <p class="level-case-observation">{item.observation}</p>
+            <div class="level-case-reason"><h4>与 {entry.data.code} 的关系</h4><p>{item.meaning}</p></div>
+            <a href={href(`/posts/${item.id}/`)}>进入案例解读 <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="level-judgment" aria-labelledby="judgment-title">
+      <h2 id="judgment-title">{entry.data.judgment}</h2>
+      <div><Content /></div>
+      <nav aria-label="相关理解">{entry.data.insightLinks.map(item => <a href={href(`/insights/#${item.id}`)}>{item.label} <span aria-hidden="true">↗</span></a>)}</nav>
+    </section>
+
+    <div class="level-definition-source"><a href="https://arxiv.org/abs/2609.11873v3">定义来源 · {entry.data.sourceSection} <span aria-hidden="true">↗</span></a></div>
+
+    <nav class="level-neighbors" aria-label="继续阅读层级">
+      <a href={previous ? href(`/levels/${previous.id}/`) : href('/#levels')}><span aria-hidden="true">←</span><span>{previous ? `${previous.data.code} · ${previous.data.title}` : '回到层级地图'}</span></a>
+      <a href={next ? href(`/levels/${next.id}/`) : href('/insights/')}><span>{next ? `${next.data.code} · ${next.data.title}` : '阅读我的理解'}</span><span aria-hidden="true">→</span></a>
+    </nav>
   </div>
 </Layout>
