@@ -3,8 +3,8 @@ import { getCollection } from 'astro:content';
 import { href } from '../utils/paths';
 
 const presentation: Record<string, { object: string; relation: string; flow: string[] }> = {
-  b0: { object: '当前输出', relation: '任务片段 · 非 RSI 参照', flow: ['执行任务', '读取反馈', '修订输出'] },
-  l1: { object: 'Loop · 自主执行', relation: '执行环节', flow: ['人设任务、环境与策略', 'AI 自主执行', '交付结果'] },
+  b0: { object: '当前输出', relation: '任务内修订对照', flow: ['执行任务', '读取反馈', '修订输出'] },
+  l1: { object: 'Loop · 自主执行', relation: '执行能力对照', flow: ['人设任务、环境与策略', 'AI 自主执行', '交付结果'] },
   l2: { object: 'P · 当前任务的策略', relation: '策略优化', flow: ['执行与反馈', '发现问题', '调整策略'] },
   l3: { object: 'M · 可复用经验', relation: '经验积累与对照', flow: ['评估行为', '总结并保存经验', '用于下一轮'] },
   l4: { object: 'E · 运行环境与执行状态', relation: '边界对照', flow: ['人设规则与边界', '修改运行条件', '让经验落实到配置'] },
@@ -48,7 +48,7 @@ const layers = (await getCollection('levels')).sort((a, b) => a.data.order - b.d
           </a>
           <div class="layer-case-strip">
             <span class="layer-relation">{layer.relation}</span>
-            {layer.cases.map((item) => <a href={item.path} aria-label={`${layer.code} ${item.relation}：阅读 ${item.name}`}>{item.name}{layer.id === 'l3' && item.relation === '边界对照' ? ' · 对照' : ''}</a>)}
+            {layer.cases.map((item) => <a href={item.path} aria-label={`${layer.code} ${item.relation}：阅读 ${item.name}`}>{item.name}{layer.id === 'l3' ? (item.relation === '边界对照' ? ' · 对照' : item.relation === '经验积累线索' ? ' · 线索' : '') : ''}</a>)}
           </div>
         </div>
       ))}

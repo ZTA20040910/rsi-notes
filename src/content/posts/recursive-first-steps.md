@@ -46,15 +46,15 @@ NanoChat 换了一个问题：在单 B200、**每次训练五分钟**的约束�
 
 ### 历史记录帮助选择下一次试验
 
-系统参考已有实验记录，同时探索多个方向，组合有前景的方案并验证结果。在人规定的任务、运行环境和预算内，AI 根据反馈决定怎样训练目标模型、优化哪个 kernel 或继续哪项试验，这是任务策略 P 的调整，体现 [L2](/rsi-notes/levels/l2/)。目标模型的训练方法，与研究代理产生和验证这些方法的机制 R，需要分开看。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+系统参考已有实验记录，同时探索多个方向，组合有前景的方案并验证结果。在人规定的任务、运行环境和预算内，AI 根据反馈选择训练方案、kernel 实现，以及继续哪项试验，这是任务策略 P 的调整，体现 [L2](/rsi-notes/levels/l2/)。目标模型的训练方法，与研究代理产生和验证这些方法的机制 R，需要分开看。[系统说明](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
-在 SOL-ExecBench 中，系统还联合搜索 **235 个 kernel**，在相关任务之间复用发现。保留先前经验并用于后续研究选择，体现 [L3 的经验积累](/rsi-notes/levels/l3/)；我会进一步关注这些记录是否保留了结果成立的条件。[跨任务复用](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+在 SOL-ExecBench 中，系统还联合搜索 **235 个 kernel**，在相关任务之间复用发现。这支持相关 kernel 任务范围内的 [L3 经验积累](/rsi-notes/levels/l3/)；我会进一步关注这些记录是否保留了结果成立的条件，以及能否迁移到其他研究项目。[跨任务复用](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 [L5 的自主递归继承](/rsi-notes/levels/l5/) 还要看系统能否自主安排研究任务、改进研究机制 R，并让下一代研究系统继续使用。复用实验记录，不能单独说明这条递归链已经形成。
 
 ### 验收决定哪些路径能够继续
 
-Recursive 披露过利用缓存、持久状态或计时细节获得虚假优势的候选；团队结合 AI 辅助与人工反馈，持续改进检测器。若这些候选被保留，后续预算就可能继续投入错误方向。与 [Naive 的局部／整体反例](/rsi-notes/posts/naive/) 放在一起看，验收既要排除虚假收益，也要避免因局部退化淘汰真正有效的组合。[评估与失败案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
+Recursive 披露过利用缓存、持久状态或计时细节获得虚假优势的候选；团队借助 AI 辅助或人工反馈，持续改进检测器。若这些候选被保留，后续预算就可能继续投入错误方向。与 [Naive 的局部／整体反例](/rsi-notes/posts/naive/) 放在一起看，验收既要排除虚假收益，也要避免因局部退化淘汰真正有效的组合。[评估与失败案例](https://recursive.com/updates/first-steps-toward-automated-ai-research)
 
 ## 理解与取舍
 

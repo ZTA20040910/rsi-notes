@@ -47,7 +47,7 @@ Apex-35B 是基于 Qwen3.6-35B-A3B 开发的文本模型，约 **35B 总参数�
 
 ### 把能力缺口转成下一轮数据
 
-Apex 的研发过程记录被用于 Apex 模型训练；Apex Research 发现能力弱项后，针对性地生成、验证数据，再用于后续模型开发。它还调整数据的长度分布、长短轨迹采样比例和每批训练数据（batch）的组成，说明选什么与如何组织数据都影响训练。这提供了经验 M 帮助后续任务的 [L3 线索](/rsi-notes/levels/l3/)；我会继续追踪最终进入训练的数据，是否仍覆盖最初想补的弱项。[Building Through RSI](https://www.apexin.com/apex-35b/#ai) · [模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)
+Apex 模型训练使用了研究轨迹。研发系统 Apex Research 还会发现能力弱项，针对性地生成、验证数据，再纳入后续训练。它还调整数据的长度分布、长短轨迹采样比例和每批训练数据（batch）的组成，说明选什么与如何组织数据都影响训练。这提供了经验 M 帮助后续任务的 [L3 线索](/rsi-notes/levels/l3/)；我会继续追踪最终进入训练的数据，是否仍覆盖最初想补的弱项。[Building Through RSI](https://www.apexin.com/apex-35b/#ai) · [模型卡](https://huggingface.co/Apexintelligence-AI/Apex-35B-V1.0)
 
 ### 让领域问题成为可执行的实验
 
