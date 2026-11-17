@@ -1,0 +1,105 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { href } from '../utils/paths';
+import '../styles/insights.css';
+
+interface Props { entry: CollectionEntry<'pages'>; }
+const { entry } = Astro.props;
+if (!entry.data.insights) throw new Error('The insights page requires six structured insights.');
+const insights = entry.data.insights;
+const byId = new Map(insights.map(insight => [insight.id, insight]));
+const mainQuestions = [
+  { id: 'bottleneck' as const, question: '下一步，改哪里？', text: '系统改变后，重新判断研究优先级。' },
+  { id: 'experience-speed' as const, question: '哪些经验能被利用？', text: '执行效率可能改变进入学习的机会。' },
+  { id: 'memory' as const, question: '怎样留给下一轮？', text: '保存可靠经验，也保存它成立的条件。' },
+];
+const conditions = [
+  { id: 'constraints' as const, text: '什么资源最紧缺' },
+  { id: 'verification' as const, text: '什么结果值得保留' },
+  { id: 'environment' as const, text: '能否操作并得到反馈' },
+];
+---
+
+<div class="article-shell shell insights-page">
+  <nav class="breadcrumb" aria-label="面包屑"><a href={href('/')}>首页</a><span>/</span><span>我的理解</span></nav>
+  <header class="insights-heading">
+    <h1>{entry.data.title}</h1>
+    <p>{entry.data.description}</p>
+  </header>
+
+  <nav class="insights-overview" id="insights-overview" aria-label="六条 insight 的关系与入口">
+    <div class="insights-main-questions">
+      {mainQuestions.map(question => {
+        const insight = byId.get(question.id)!;
+        return (
+          <a class="insights-question" href={`#${insight.id}`}>
+            <span class="insights-map-label"><span>{insight.number}</span>{insight.label}<span aria-hidden="true">↘</span></span>
+            <h2>{question.question}</h2>
+            <p>{question.text}</p>
+          </a>
+        );
+      })}
+    </div>
+    <div class="insights-conditions">
+      <p>贯穿三个问题的条件</p>
+      <div>
+        {conditions.map(condition => {
+          const insight = byId.get(condition.id)!;
+          return (
+            <a href={`#${insight.id}`}>
+              <span>{insight.number}</span>
+              <span><strong>{insight.label}</strong><span>{condition.text}</span></span>
+              <span aria-hidden="true">↓</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </nav>
+
+  <div class="insight-essays">
+    {insights.map(insight => (
+      <section class="insight-essay" id={insight.id} aria-labelledby={`insight-title-${insight.id}`}>
+        <header class="insight-essay-header">
+          <span class="insight-index" aria-hidden="true">{insight.number}</span>
+          <div><h2 id={`insight-title-${insight.id}`}>{insight.title}</h2><p>{insight.thesis}</p></div>
+        </header>
+        <div class="insight-argument">
+          <div class="insight-evidence">
+            <h3>材料依据</h3>
+            <p>{insight.evidence}</p>
+            <div class="insight-source-links">
+              {insight.sources.map(source => <a href={source.url}>{source.label} <span aria-hidden="true">↗</span></a>)}
+            </div>
+          </div>
+          <div class="insight-reasoning">
+            <h3>推理过程</h3>
+            <ol>{insight.reasoning.map(step => <li>{step}</li>)}</ol>
+          </div>
+        </div>
+        <div class="insight-choice"><h3>我的取舍</h3><p>{insight.choice}</p></div>
+        <div class="insight-connections" aria-label="与其他判断的联系">
+          {insight.connections.map(connection => {
+            const related = byId.get(connection.id)!;
+            return (
+              <a href={`#${related.id}`}>
+                <span>{related.number} · {related.label}<span aria-hidden="true">↗</span></span>
+                <p>{connection.text}</p>
+              </a>
+            );
+          })}
+        </div>
+        <footer class="insight-essay-footer">
+          <div>{insight.cases.map(item => <a href={href(`/posts/${item.id}/`)}>{item.label} 案例 <span aria-hidden="true">↗</span></a>)}</div>
+          <a href="#insights-overview" aria-label={`从${insight.label}返回六条判断总览`}>回到总览 <span aria-hidden="true">↑</span></a>
+        </footer>
+      </section>
+    ))}
+  </div>
+
+  <section class="insights-conclusion" aria-labelledby="insights-conclusion-title">
+    <h2 id="insights-conclusion-title">我会怎样判断下一项改进</h2>
+    <div><slot name="conclusion" /></div>
+    <nav aria-label="继续阅读"><a href={href('/#levels')}>回到 B0–L5 <span aria-hidden="true">↗</span></a><a href={href('/references/')}>参考资料 <span aria-hidden="true">↗</span></a></nav>
+  </section>
+</div>

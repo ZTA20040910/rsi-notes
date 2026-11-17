@@ -1,0 +1,104 @@
+.insights-heading { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 65px; align-items: end; margin: 40px 0 38px; }
+.insights-heading h1 { margin: 0; font-size: clamp(36px, 4.3vw, 52px); line-height: 1.35; letter-spacing: -.035em; }
+.insights-heading > p { margin: 0 0 3px; padding-left: 22px; border-left: 2px solid var(--orange); color: var(--muted); font-size: 16px; line-height: 1.9; }
+.insights-overview { margin-bottom: 60px; scroll-margin-top: 25px; }
+.insights-main-questions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.insights-question { display: block; padding: 25px; background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--accent); text-decoration: none; }
+.insights-question:hover { border-color: var(--accent); color: var(--ink); }
+.insights-map-label { display: flex; align-items: center; gap: 12px; color: var(--accent); font-size: 13px; }
+.insights-map-label > span:first-child { color: var(--orange); font: 20px/1 var(--serif); }
+.insights-map-label > span:last-child { margin-left: auto; font-size: 20px; }
+.insights-question h2 { margin: 24px 0 10px; font-size: 27px; line-height: 1.5; }
+.insights-question p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.insights-conditions { padding: 23px 0 0; }
+.insights-conditions > p { margin-bottom: 12px; color: var(--muted); font-size: 13px; }
+.insights-conditions > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.insights-conditions a { display: flex; align-items: center; gap: 14px; padding: 17px 19px; border: 1px solid var(--line); background: var(--card); text-decoration: none; }
+.insights-conditions a:hover { border-color: var(--accent); }
+.insights-conditions a > span:first-child { color: var(--orange); font: 22px/1 var(--serif); }
+.insights-conditions a > span:last-child { margin-left: auto; color: var(--accent); }
+.insights-conditions strong { display: block; font-size: 15px; font-weight: 600; }
+.insights-conditions a > span > span { display: block; color: var(--muted); font-size: 13px; }
+.insight-essays { display: grid; gap: 32px; }
+.insight-essay { padding: 32px 35px 0; border: 1px solid var(--line); background: var(--card); scroll-margin-top: 25px; }
+.insight-essay:target { border-color: var(--accent); }
+.insight-essay-header { display: grid; grid-template-columns: 65px minmax(0, 1fr); gap: 22px; align-items: start; margin-bottom: 28px; }
+.insight-index { color: var(--orange); font: 48px/1.2 var(--serif); }
+.insight-essay h2 { margin: 0 0 10px; font-size: 30px; line-height: 1.5; letter-spacing: -.025em; }
+.insight-essay-header p { margin: 0; color: var(--accent); font-size: 17px; line-height: 1.85; }
+.insight-argument { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 32px; margin-bottom: 26px; }
+.insight-essay h3 { margin: 0 0 14px; font-family: var(--sans); font-size: 14px; font-weight: 650; }
+.insight-evidence { padding: 23px 25px; background: var(--paper); border-left: 2px solid var(--line); }
+.insight-evidence > p { margin: 0 0 16px; font-size: 15px; line-height: 1.9; }
+.insight-source-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.insight-source-links a { min-height: 28px; color: var(--accent); font-size: 13px; text-decoration: none; }
+.insight-source-links a:hover { text-decoration: underline; }
+.insight-reasoning { padding: 22px 0 0; }
+.insight-reasoning ol { margin: 0; padding: 0; list-style: none; counter-reset: reasoning-step; }
+.insight-reasoning li { position: relative; padding: 0 0 15px 34px; font-size: 15px; line-height: 1.9; }
+.insight-reasoning li:last-child { padding-bottom: 0; }
+.insight-reasoning li::before { counter-increment: reasoning-step; content: counter(reasoning-step); position: absolute; top: 3px; left: 0; display: grid; place-items: center; width: 23px; height: 23px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); font: 13px/1 var(--sans); }
+.insight-choice { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 20px; padding: 24px 26px; background: var(--panel); border-left: 3px solid var(--orange); }
+.insight-choice h3 { margin: 2px 0 0; color: var(--accent); }
+.insight-choice p { margin: 0; font-size: 16px; line-height: 1.9; }
+.insight-connections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+.insight-connections a { padding: 17px 0 0; border-top: 1px solid var(--line); text-decoration: none; }
+.insight-connections a > span { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--accent); font-size: 14px; }
+.insight-connections p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.insight-connections a:hover > span { text-decoration: underline; text-underline-offset: 4px; }
+.insight-essay-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 18px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.insight-essay-footer > div { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+.insight-essay-footer a { color: var(--accent); text-decoration: none; min-height: 28px; display: inline-flex; align-items: center; gap: 7px; }
+.insight-essay-footer > a { color: var(--muted); }
+.insight-essay-footer a:hover { text-decoration: underline; }
+.insights-conclusion { margin-top: 45px; padding: 32px 35px; border-top: 3px solid var(--accent); background: var(--panel); }
+.insights-conclusion h2 { margin: 0 0 20px; font-size: 28px; }
+.insights-conclusion p { margin: 0; font-size: 17px; line-height: 1.95; }
+.insights-conclusion nav { display: flex; flex-wrap: wrap; gap: 12px 25px; margin-top: 24px; }
+.insights-conclusion nav a { color: var(--accent); font-size: 14px; text-decoration: none; }
+.insights-conclusion nav a:hover { text-decoration: underline; }
+@media (max-width: 1000px) {
+  .insights-heading { gap: 35px; }
+  .insights-main-questions, .insights-conditions > div { gap: 14px; }
+  .insights-question { padding: 21px; }
+  .insights-question h2 { font-size: 24px; }
+  .insights-conditions a { padding: 15px; gap: 10px; }
+  .insight-essay { padding: 28px 26px 0; }
+  .insight-argument { gap: 26px; }
+  .insight-evidence { padding: 20px; }
+}
+@media (max-width: 768px) {
+  .insights-heading { grid-template-columns: 1fr; gap: 20px; margin-top: 25px; }
+  .insights-heading h1 { font-size: 38px; }
+  .insights-main-questions { grid-template-columns: 1fr; gap: 12px; }
+  .insights-question { padding: 20px 23px; }
+  .insights-question h2 { margin-top: 13px; }
+  .insights-conditions > div { grid-template-columns: 1fr; gap: 9px; }
+  .insights-conditions a { padding: 13px 20px; }
+  .insights-conditions a > span:nth-child(2) { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 16px; }
+  .insights-overview { margin-bottom: 35px; }
+  .insight-essay-header { grid-template-columns: 45px minmax(0, 1fr); gap: 16px; }
+  .insight-index { font-size: 36px; }
+  .insight-essay h2 { font-size: 27px; }
+  .insight-essay-header p { font-size: 16px; }
+  .insight-argument { grid-template-columns: 1fr; gap: 21px; }
+  .insight-reasoning { padding-top: 0; }
+  .insight-choice { grid-template-columns: 1fr; gap: 10px; padding: 21px; }
+  .insights-conclusion { padding: 28px; }
+}
+@media (max-width: 480px) {
+  .insights-heading h1 { font-size: 33px; }
+  .insights-heading > p { padding-left: 16px; font-size: 15px; }
+  .insight-essay { padding: 23px 19px 0; }
+  .insight-essay-header { grid-template-columns: 1fr; gap: 9px; margin-bottom: 22px; }
+  .insight-index { font-size: 30px; }
+  .insight-essay h2 { font-size: 25px; }
+  .insight-evidence { padding: 17px; }
+  .insight-choice { padding: 18px; }
+  .insight-choice p { font-size: 15px; }
+  .insight-connections { grid-template-columns: 1fr; gap: 15px; }
+  .insight-essay-footer { gap: 9px; }
+  .insights-conclusion { padding: 24px; }
+  .insights-conclusion h2 { font-size: 25px; }
+  .insights-conclusion p { font-size: 16px; }
+}

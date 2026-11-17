@@ -1,69 +1,155 @@
 ---
 title: "一次研究，怎样成为下一轮的优势？"
 description: "从瓶颈迁移、学习机会到经验积累，六个连接一次改进与后续研究的判断。"
+insights:
+  - id: "bottleneck"
+    number: "01"
+    label: "瓶颈迁移"
+    title: "一次优化，会改变下一步值得研究什么"
+    thesis: "我更看重系统变化后能否重新选择方向，而不只看优化次数。"
+    evidence: "Flint 减少每个 token 的激活参数后，输出层 lm_head 的权重读取占比变得突出。团队随后对输出层做低比特量化，再通过蒸馏恢复精度，并适配推理 kernel。"
+    sources:
+      - label: "Flint · 研发过程"
+        url: "https://recursive.com/updates/introducing-recursive-flint"
+    reasoning:
+      - "主干变快后，各部分的相对开销随之变化，原先不起眼的输出层可能成为新重点。"
+      - "架构会改变量化收益，量化又改变 kernel 的实现空间，局部选择相互依赖。"
+      - "固定其中一环，可能漏掉组合收益；研究优先级应随运行状态调整。"
+    choice: "我会允许架构、表示与运行程序共同调整，再按实际任务的质量、时延和内存决定是否采用。逐 token 解码、prefill 与大 batch 的瓶颈不同，各模块的收益也不能简单相加。"
+    connections:
+      - id: "constraints"
+        text: "什么值得优化，取决于当前最紧缺的资源。"
+      - id: "verification"
+        text: "组合是否有效，需要回到完整任务验收。"
+    cases:
+      - label: "Flint"
+        id: "flint"
+  - id: "experience-speed"
+    number: "02"
+    label: "速度与学习机会"
+    title: "推理速度，可能影响模型能学到哪些经验"
+    thesis: "推理提速可能减少有用轨迹的损失，改变实际进入训练的数据组成。"
+    evidence: "Naive 对长轨迹 RL 的解释是：同步训练需要等待慢轨迹；异步训练中，轨迹若跨越过多策略版本，可能因过时而被整条丢弃。生成时间因此影响经验能否进入训练。"
+    sources:
+      - label: "Naive · 长轨迹 RL"
+        url: "https://naive.ai/en/research/"
+    reasoning:
+      - "若长轨迹更容易被丢弃，保留的样本就可能偏向容易快速完成的任务。"
+      - "若被丢弃的部分包含有价值的困难经验，提速才可能减少有用信息的损失。"
+      - "长轨迹也可能只是绕路；能及时进入训练，不代表一定改善最终能力。"
+    choice: "我会先判断速度改善作用在哪段流程，再看留下的经验是否有用。长轨迹生成受限时，单条完成时间很重要；若训练、排队或工具执行占据主要时间，单纯提高 tokens/s 的收益就会有限。"
+    connections:
+      - id: "constraints"
+        text: "提速是否重要，先看时间消耗在哪一段。"
+      - id: "memory"
+        text: "经验能否及时获得，与经验怎样积累，解决的是两个相邻问题。"
+    cases:
+      - label: "Naive"
+        id: "naive"
+  - id: "constraints"
+    number: "03"
+    label: "资源约束"
+    title: "什么方法更好，必须连同预算一起定义"
+    thesis: "方法的优劣取决于预算内能达到的结果，执行成本也参与算法选择。"
+    evidence: "Recursive 的 NanoChat 在五分钟训练预算下采用便宜的哈希局部记忆；Apex 的 DDPO 案例减少去噪开销、调整停止方式，把更多可用时间用于训练。"
+    sources:
+      - label: "Recursive · NanoChat"
+        url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
+      - label: "Apex · DDPO"
+        url: "https://www.apexin.com/apex-35b/#ai"
+    reasoning:
+      - "每步效果更好却耗时更多的方法，在固定训练时间下可能反而落后。"
+      - "降低执行成本，会改变预算内可完成的训练量，工程实现因此参与算法选择。"
+      - "固定时间、固定计算量和固定质量门槛是不同问题，优势不能直接互相外推。"
+    choice: "我会先说明硬件、时间与质量目标，再解释方案好在哪里。五分钟训练下有效的设计未必适合长时间训练，省计算也可能增加存储；最终程序的成本与发现它的搜索成本，需要分别计算。"
+    connections:
+      - id: "bottleneck"
+        text: "资源约束变化，会改变下一步研究的优先级。"
+      - id: "environment"
+        text: "验证成本同样占预算，影响任务能否反复探索。"
+    cases:
+      - label: "Recursive"
+        id: "recursive-first-steps"
+      - label: "Apex"
+        id: "apex"
+  - id: "verification"
+    number: "04"
+    label: "验收与研究方向"
+    title: "好的验收，既要拒绝假改进，也要保住真改进"
+    thesis: "验收不仅影响结果可信度，也决定真正有效的方向能否继续获得预算。"
+    evidence: "Naive 的 TMA 预取在微基准里略慢，却让完整模型更快；MoE 融合数值正确，整模反而更慢。Recursive 也披露过利用缓存或计时细节获得虚假优势的候选。"
+    sources:
+      - label: "Naive · 局部与整模对照"
+        url: "https://naive.ai/en/research/"
+      - label: "Recursive · 评估与失败案例"
+        url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
+    reasoning:
+      - "验收决定哪些候选能够保留，进而影响下一轮预算与探索机会的分配。"
+      - "检查不足会放过假收益；只看局部指标，又可能淘汰整体有效的组合。"
+      - "两类错误都会改变研究方向，局部检查需要与完整任务评价配合。"
+    choice: "我会用微基准定位问题，用实际任务决定是否采用。检查的范围随结论而定，不要求每一步都跑最昂贵的测试；对于局部退化但整体受益的候选，应保留进一步验证的机会。"
+    connections:
+      - id: "bottleneck"
+        text: "跨模块组合可能局部退化，验收应看整体收益。"
+      - id: "memory"
+        text: "错误经验一旦被保留，也可能持续误导后续研究。"
+    cases:
+      - label: "Naive"
+        id: "naive"
+      - label: "Recursive"
+        id: "recursive-first-steps"
+  - id: "environment"
+    number: "05"
+    label: "可执行环境"
+    title: "能操作、能得到反馈，研究才容易反复推进"
+    thesis: "可执行的环境让编程能力进入其他科研领域，环境质量也影响研究空间。"
+    evidence: "Recursive 偏好指标清楚、反馈较快的研究任务。Apex 把翼片运动表示为可调整的 Fourier 系数，再用模拟器评价；机器人任务也通过代码执行与反馈迭代。"
+    sources:
+      - label: "Recursive · 任务选择"
+        url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
+      - label: "Apex · CFD 与机器人"
+        url: "https://www.apexin.com/apex-35b/#ai"
+    reasoning:
+      - "这些任务都允许代理修改对象、执行并观察后果，编程由此成为实验入口。"
+      - "可靠反馈让高门槛领域可被反复探索；验证缓慢或目标模糊则限制试错。"
+      - "模型能力与环境质量共同影响适用范围，搭建环境本身也是研究投入。"
+    choice: "我会优先选择反馈可靠、验证成本可承担、又有实际改进空间的任务，而不只看学科名称。模拟器仍需覆盖关键约束，模拟中的收益不能直接当成现实效果，工具接口也不能替代领域判断。"
+    connections:
+      - id: "verification"
+        text: "能执行只是起点，反馈还必须衡量真正关心的目标。"
+      - id: "memory"
+        text: "新任务中的反馈，可以检验旧经验是否仍然适用。"
+    cases:
+      - label: "Recursive"
+        id: "recursive-first-steps"
+      - label: "Apex"
+        id: "apex"
+  - id: "memory"
+    number: "06"
+    label: "经验积累"
+    title: "研究经验，需要以合适的方式留给下一轮"
+    thesis: "我倾向于用记录保留易变细节，用训练积累可靠、可迁移的判断。"
+    evidence: "Recursive 复用历史实验上下文、并行探索并合并分支；Apex 描述了研究轨迹参与训练，以及通过失败分析生成、验证定向数据，再纳入后续开发的过程。"
+    sources:
+      - label: "Recursive · 历史复用"
+        url: "https://recursive.com/updates/first-steps-toward-automated-ai-research"
+      - label: "Apex · 研究经验回流"
+        url: "https://www.apexin.com/apex-35b/#ai"
+    reasoning:
+      - "特定 shape 下的失败依赖环境，适合连同条件保存为可修正的记录。"
+      - "判断融合是否增加同步开销，更接近可迁移规律，筛选后可考虑用于训练。"
+      - "因此我会按稳定性选择载体，不把每条经验都训练进去，也不每次重读全部历史。"
+    choice: "我会先筛掉环境故障和随机噪声，再保存结果及成立条件。评价积累是否有效，要看下一轮是否少做重复判断、选到更好的起点，并能识别旧经验何时失效，而不只是统计轨迹数量。"
+    connections:
+      - id: "bottleneck"
+        text: "历史帮助选择起点，系统变化后仍需重查经验的适用条件。"
+      - id: "verification"
+        text: "进入记录或训练之前，先判断经验是否可靠。"
+    cases:
+      - label: "Recursive"
+        id: "recursive-first-steps"
+      - label: "Apex"
+        id: "apex"
 ---
 
-我关心一次成果怎样改变下一轮研究：它是否暴露了新的瓶颈，让更多有价值的经验进入训练，或者帮助系统少走一次弯路。预算、验收和实验环境，则决定这些机会能否变成实际收益。
-
-<h2 id="bottleneck">01 · 一次优化，会改变下一步值得研究什么</h2>
-
-Flint 的研发说明把专家配置、输出层量化、蒸馏与推理 kernel 连在一起：主干变得稀疏后，输出层开销更值得处理；降低表示成本，又需要恢复精度。[Flint 原文](https://recursive.com/updates/introducing-recursive-flint)
-
-我的理解是，自动研究的价值不只在于提出更多候选，还在于**系统改变后，重新选择下一项干预**。如果把模型结构或运行程序中的任一部分永久固定，可能漏掉组合收益。找到相互配合的技术组合，本身就有研究价值，不必只数提出了多少个全新算法。
-
-我的取舍是允许架构与运行程序一起调整，再按任务质量、时延和内存共同判断。组合收益不能简单相加，prefill、大 batch 和逐 token 解码也可能需要不同方案。
-
-[展开 Flint 案例 →](/rsi-notes/posts/flint/)
-
-<h2 id="experience-speed">02 · 推理速度，可能影响模型能学到哪些经验</h2>
-
-Naive 解释了长轨迹 RL 的一个问题：同步训练要等待慢轨迹；异步训练中，轨迹若跨过太多策略版本，可能因过时而被整条丢弃。[Naive 原文](https://naive.ai/en/research/)
-
-这让我把速度看成学习过程中的一个条件。若有价值的困难轨迹更容易被丢弃，实际训练数据就可能偏向容易快速完成的任务。更快完成有机会减少这部分经验的损失：**运行效率可能改变实际进入训练的数据组成。**
-
-我会先看提速作用于哪段流程，以及被保留下来的经验是否有用。长轨迹也可能只是绕路；若训练、排队或工具执行占据主要时间，单纯提高 tokens/s 的收益就会有限。
-
-[展开 Naive 案例 →](/rsi-notes/posts/naive/)
-
-<h2 id="constraints">03 · 资源约束参与定义“更好的方法”</h2>
-
-Recursive 在固定训练时间下采用便宜的哈希局部记忆；Apex 的 DDPO 案例通过降低去噪开销、调整停止方式，利用更多可用训练时间。[Recursive 原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)、[Apex 原文](https://www.apexin.com/apex-35b/#ai)
-
-每步效果更好，却耗时更多的方法，不一定在固定时间下胜出。**执行成本会影响能达到的学习结果，因此工程实现也参与算法选择。**我会先说明最紧缺的资源，再解释方案为什么值得采用。
-
-固定时间、固定计算量和固定质量门槛对应不同问题。五分钟训练中的优势不能直接外推到长时间训练；便宜的模块也可能消耗更多存储，省时不等于所有成本都下降。
-
-<h2 id="verification">04 · 好的验收，也要保住真正有效的方向</h2>
-
-Naive 的 TMA 预取在微基准中略慢，却让完整模型更快；MoE 融合数值正确，整体反而更慢。Recursive 则披露了缓存与计时漏洞产生的虚假优势。[Naive 原文](https://naive.ai/en/research/)、[Recursive 原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)
-
-**验收决定哪些方向还能获得下一轮预算。**检查不充分，会让无效方案继续消耗资源；只看局部指标，又可能提前淘汰真正有价值的组合。因此，评估器既影响结果可信度，也影响创新被留下的机会。
-
-我的取舍是用局部检查定位问题，用实际任务决定采用。不同检查各有成本，不必每一步都做最昂贵的测试。
-
-<h2 id="environment">05 · 能操作、能得到反馈，科研才容易形成闭环</h2>
-
-Recursive 偏好指标清楚、反馈较快的任务。Apex 将翼片运动表示为 Fourier 系数，由模拟器评价；机器人任务也通过代码与执行反馈迭代。[Recursive 原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)、[Apex 原文](https://www.apexin.com/apex-35b/#ai)
-
-这些领域共享的是可修改对象、可执行过程和可观察结果。编程因而成为跨领域实验能力的入口：模型通过代码改变对象，再从运行结果中选择下一步。
-
-**搭建任务环境本身就是研究投入。**我会优先关注反馈可靠、验证成本可承担的任务，而不只看学科名称。一个知识门槛很高但有可靠模拟器的领域，可能比目标模糊、验证缓慢的任务更适合自动研究。模拟结果能否迁移到现实，仍取决于环境与目标的准确性。
-
-<h2 id="memory">06 · 研究经验，需要以合适的方式留下来</h2>
-
-Recursive 复用实验历史、并行探索与合并分支；Apex 描述了研究轨迹参与训练，并通过失败分析构造定向数据。[Recursive 原文](https://recursive.com/updates/first-steps-toward-automated-ai-research)、[Apex 原文](https://www.apexin.com/apex-35b/#ai)
-
-我会按经验的稳定性和适用范围，选择积累方式：
-
-| 经验 | 我倾向的载体 | 为什么 |
-|---|---|---|
-| 某个 kernel 在特定 shape 下失败 | 外部研究记录 | 保留环境细节，便于查回和修正 |
-| 怎样判断融合是否增加同步开销 | 经过筛选的训练数据 | 让可靠的决策规律跨任务复用 |
-
-**值得保留的不只是结果，还包括结果成立的条件。**这也意味着，不必每得到一条经验就更新模型，不必每次把全部历史塞进上下文。先筛掉环境故障和随机噪声，再看经验是否能帮助下一轮少做重复判断、选对起点，并识别旧经验何时失效。
-
-[读 Recursive 的历史复用 →](/rsi-notes/posts/recursive-first-steps/) · [读 Apex 的经验回流 →](/rsi-notes/posts/apex/)
-
----
-
-[改进机制如何递归继承 →](/rsi-notes/levels/l5/) · [参考资料 →](/rsi-notes/references/)
+我会沿着三个问题继续判断 RSI 的进展：**下一步改什么，哪些经验能被利用，什么能留给下一轮**。预算限定可行选择，验收决定取舍，环境提供反馈；这些条件共同决定一次成果能否成为后续研究的优势。
